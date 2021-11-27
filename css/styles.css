@@ -14,10 +14,8 @@ html {
 }
 
 .main-view {
-  /*width: 375px;
-  height: 812px;*/
-  width: 100%;
-  height: 100vh;
+  width: 375px;
+  height: 812px;
   box-sizing: border-box;
   display: block;
   position: relative;
