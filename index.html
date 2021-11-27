@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  </head>
+
+  <div class="main-view">
+
+    <div class="main-content">
+      <div class="top-content">
+        <header class="min-header">
+          <button class="arrow-button"></button>
+    
+          <button class="navigation-button"></button>
+        </header>
+      <div id="particles-js"></div>  
+
+
+
+
+        <div class="timer small">
+          <div class="label">
+            <div class="seconds"></div>
+            <div class="unit">s</div>
+          </div>
+
+          <svg class="progress-ring" width="100" height="100">
+            <defs>
+              <linearGradient id="linear" x1="35%" y1="55%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#2BCEBD" />
+                <stop offset="100%" stop-color="#22B0FB" />
+              </linearGradient>
+            </defs>
+
+            <circle
+              class="progress-ring__base"
+              stroke="white"
+              stroke-width="4"
+              fill="transparent"
+              r="35"
+              cx="50"
+              cy="50"
+            />
+            <circle
+              class="progress-ring__circle"
+              stroke="url(#linear)"
+              stroke-width="4"
+              fill="transparent"
+              r="35"
+              cx="50"
+              cy="50"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div class="box large">
+        <div class="header">
+          <div class="title">Question</div>
+          <div class="title question text-purple">1/20</div>
+          <div class="result incorrect">0</div>
+          <div class="result correct">0</div>
+        </div>
+        <div class="content">
+          <p>
+            From the set of integers from 1 to 10, inclusive, two integers are
+            randomly selected one after the other with replacement.
+          </p>
+          <p>
+            What is the probability that the sum of the two integers is greater
+            than 5?
+          </p>
+          <p>
+            From the set of integers from 1 to 10, inclusive, two integers are
+            randomly selected one after the other with replacement.
+          </p>
+          <p>
+            What is the probability that the sum of the two integers is greater
+            than 5?
+          </p>
+        </div>
+        <div class="scrolling-overlay"></div>
+      
+      </div>
+
+      <div class="answers">
+        <a class="option">All real numbers except -1/2</a>
+        <a class="option">All real numbers except -1/2</a>
+        <a class="option">All real numbers except -1/2</a>
+        <a class="option">All real numbers except -1/2</a>
+      </div>
+
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        var QuestionTimer = 20;
+
+        var circle = document.querySelector(".progress-ring__circle");
+        var radius = circle.r.baseVal.value;
+        var circumference = radius * 2 * Math.PI;
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = `${circumference}`;
+        function setProgress(percent) {
+          const offset = circumference - (percent / 100) * circumference;
+          circle.style.strokeDashoffset = offset;
+        }
+
+        setProgress(0);
+
+        var QuestionSeconds = document.querySelector(".seconds");
+
+        var QuestionCounter = QuestionTimer;
+        QuestionSeconds.textContent = "" + QuestionCounter;
+
+        setInterval(function () {
+          circle.style.transition =
+            QuestionTimer + "s linear stroke-dashoffset";
+          QuestionSeconds.textContent = "" + QuestionCounter;
+
+          if (QuestionCounter > 0) {
+            QuestionCounter -= 1;
+          } else {
+            QuestionCounter = 0;
+          }
+          circle.style.opacity = "1";
+          setProgress(100);
+        }, 1000);
+      });
+
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 130, density: { enable: true, value_area: 900 } },
+          color: { value: "#ffffff" },
+          shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 6 },
+            image: { src: "img/github.svg", width: 100, height: 100 },
+          },
+          opacity: {
+            value: 0.4,
+            random: true,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
+          },
+          size: {
+            value: 3,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
+          },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 3,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false, rotateX: 300, rotateY: 1200 },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: false, mode: "repulse" },
+            onclick: { enable: false, mode: "push" },
+            resize: true,
+          },
+          modes: {
+            grab: { distance: 400, line_linked: { opacity: 1 } },
+            bubble: {
+              distance: 800,
+              size: 25,
+              duration: 2,
+              opacity: 8,
+              speed: 2,
+            },
+            repulse: { distance: 200, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 },
+          },
+        },
+        retina_detect: true,
+      });
+      var count_particles, stats, update;
+      stats = new Stats();
+      stats.setMode(0);
+      stats.domElement.style.position = "absolute";
+      stats.domElement.style.left = "0px";
+      stats.domElement.style.top = "0px";
+      document.body.appendChild(stats.domElement);
+      count_particles = document.querySelector(".js-count-particles");
+      update = function () {
+        stats.begin();
+        stats.end();
+        if (
+          window.pJSDom[0].pJS.particles &&
+          window.pJSDom[0].pJS.particles.array
+        ) {
+          count_particles.innerText =
+            window.pJSDom[0].pJS.particles.array.length;
+        }
+        requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    </script>
+  </div>
+</html>
