@@ -602,9 +602,9 @@ flex: 33%;
 .leaderboard-chart .winner-two{
   margin-right: -15px;
 }
-
+/*
 .leaderboard-chart .winner-one{
-}
+}*/
 
 .leaderboard-chart .winner-three{
   margin-left: -15px;
@@ -862,3 +862,5 @@ font-size: 12px;
     opacity: 0;
   }
 }
+
+/*TEST*/
