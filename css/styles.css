@@ -161,6 +161,11 @@ margin-top: 180px;
   margin-top: 85px;
 }
 
+.card-dragger-1,
+.card-dragger-2{
+  touch-action: none;
+}
+
 .course-cards-container .card .arrow{
   width: 21px;
   height: 21px;
