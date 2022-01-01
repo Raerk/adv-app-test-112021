@@ -163,7 +163,9 @@ margin-top: 180px;
 
 .card-dragger-1,
 .card-dragger-2{
-  touch-action: none;
+  -ms-touch-action: none !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
 }
 
 .course-cards-container .card .arrow{
