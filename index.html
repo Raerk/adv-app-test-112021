@@ -9,6 +9,7 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script src="particles.min.js"></script>
     
   </head>
@@ -140,6 +141,270 @@ function randomId(){
     });
     </script>
 <div class="preview">
+
+<div class="main-view splash">
+  <div class="splash-hover"></div>
+</div>
+
+
+<div class="main-view courses">
+  <div class="main-content">
+    <div class="top-content small">
+      <header class="min-header">
+        <button class="arrow-button"></button>
+        <button class="navigation-button"></button>
+      </header>
+      <div class="top-title">Courses</div>
+      <div id="particles-js"></div>  
+    </div>
+
+    <div class="course-cards-container">
+
+      <div class="card-dragger-1">
+      <div class="card inactive software-dev">
+        <div class="title" id="test">Software Dev</div>
+        <div class="arrow"></div>
+      </div>
+    </div>
+
+    <div class="card-dragger-2">
+      <div class="card active ai-fluency ">
+        <div class="title">AI Fluency</div>
+        <div class="arrow"></div>
+      </div>
+    </div>
+
+    </div>
+
+    <script>
+
+var zindex;
+
+var SwapActive;
+
+var DragStatus;
+
+var SwapOrder;
+
+      // target elements with the "draggable" class
+interact('.card-dragger-2')
+  .draggable({
+    // enable inertial throwing
+    inertia: true,
+    // keep the element within the area of it's parent
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
+    // enable autoScroll
+    autoScroll: true,
+
+    listeners: {
+      // call this function on every dragmove event
+      move: dragMoveListener,
+
+      // call this function on every dragend event
+      end (event) {
+        var textEl = event.target.querySelector('p')
+
+        textEl && (textEl.textContent =
+          'moved a distance of ' +
+          (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                     Math.pow(event.pageY - event.y0, 2) | 0))
+            .toFixed(2) + 'px')
+
+           // $('.card.inactive .title').css('color',"yellow");
+
+            //if(ChangeDepth)
+
+
+            console.log(SwapActive);
+
+            if(SwapActive){
+            
+
+            var TempCardInactive = $('.card.inactive');
+
+            $('.card.active').css('transition','750ms all');
+
+            $('.card .title').css('transition','300ms all');
+
+            $('.card.inactive').css('transition','750ms all');
+            $('.card.inactive').css('margin-top','-100px');
+            $('.card.active').css('margin-top','-250px');
+ 
+
+
+           // TempCardInactive.removeClass('.inactive');
+            //TempCardInactive.addClass('.active');
+
+
+
+            $('.card.inactive').css('transform','scale('+1+")");
+            $('.card.inactive').css('opacity','1');
+
+            $('.card.active').css('transform','scale('+0.95+")");
+            $('.card.active').css('opacity','0.9');
+            $('.card.active .title').css('margin-top','15px');
+            $('.card.active .arrow').css('top','15px');
+
+            SwapActive = false;
+
+
+              setTimeout(
+
+                function(){$('.card.active').css('transition','0ms all');
+
+$('.card.inactive').css('transition','0ms all');
+$('.card.inactive').css('margin-top','-150px');
+$('.card.active').css('margin-top','-150px');
+
+
+
+// TempCardInactive.removeClass('.inactive');
+//TempCardInactive.addClass('.active');
+
+$('.card .title').css('transition','0ms all');
+
+$('.card.inactive').css('transform','scale('+0.95+")");
+$('.card.inactive').css('opacity','0.9');
+$('.card.inactive .title').css('margin-top','15px');
+$('.card.inactive .arrow').css('top','15px');
+
+
+zindex = 0;
+$('.card.inactive').css('z-index',""+zindex);
+$('.card.active').css('transform','scale('+1+")");
+$('.card.active').css('opacity','1');
+$('.card.active .title').css('margin-top','85px');
+$('.card.active .arrow').css('top','165px');
+             
+
+SwapCardContents();
+
+             } ,750);
+
+            }
+ 
+
+      }
+    }
+  })
+
+function dragMoveListener (event) {
+  var target = event.target
+  // keep the dragged position in the data-x/data-y attributes
+  //var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+  var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+  // translate the element
+  target.style.transform = 'translate(' + 0 + 'px, ' + y + 'px)'
+ 
+
+  console.log(y);
+
+
+  //var colorchange =$('#test');
+    //test.style.color="yellow";
+    $('.card.inactive').css('z-index',""+zindex);
+if(!SwapActive){
+
+    var titleY = y*0.6;
+
+    var scaleActiveCard = 1-(y/1500);
+    var scaleInactiveCard = 0.95+(y/1500);
+    var moveInactiveCardArrow = 15+y;
+
+
+
+    var ChangeDepth;
+
+  if(y>0){
+    $('.card.inactive').css('transform','scale('+scaleInactiveCard+")");
+    $('.card.active').css('transform','scale('+scaleActiveCard+")");
+
+
+
+
+   // alert("test");
+   if(titleY>15&&titleY<90){
+    $('.card.inactive .title').css('margin-top',titleY+"px");
+    $('.card.active .title').css('margin-top',85+"px");
+    }
+
+    if(moveInactiveCardArrow<165){
+      $('.card.inactive .arrow').css('top',moveInactiveCardArrow+"px");
+    }
+
+
+  
+  }else{
+
+    if(SwapActive){
+
+
+    }else{
+    $('.card.inactive .title').css('margin-top',15+"px");
+    $('.card.inactive .arrow').css('top',"15px");
+    $('.card.inactive').css('transform','scale('+0.95+")");
+    }
+  }
+
+  if(y>150){
+    SwapActive = true;
+    zindex = 2;
+    console.log(zindex);
+    event.y0=-200;
+  }
+}else{}
+
+  //// update the posiion attributes
+//  target.setAttribute('data-x', x)
+
+  target.setAttribute('data-y', y);
+
+}
+
+// this function is used later in the resizing and gesture demos
+window.dragMoveListener = dragMoveListener;
+
+
+function SwapCardContents(){
+
+
+  if(SwapOrder==1){
+
+
+    $('.card.active.software-dev').removeClass('software-dev').addClass('ai-fluency');
+  $('.card.active .title').text("AI Fluency");
+
+  $('.card.inactive.ai-fluency').removeClass('ai-fluency').addClass('software-dev');
+  $('.card.inactive .title').text("Software Dev");
+
+  SwapOrder = 0;
+
+}else{
+  $('.card.active.ai-fluency').removeClass('ai-fluency').addClass('software-dev');
+  $('.card.active .title').text("Software Dev");
+
+  $('.card.inactive.software-dev').removeClass('software-dev').addClass('ai-fluency');
+  $('.card.inactive .title').text("AI Fluency");
+
+
+
+  SwapOrder = 1;
+
+  
+}
+  
+}
+
+    </script>
+
+  </div>
+</div>
 
   <div class="main-view">
 
