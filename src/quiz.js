@@ -12,8 +12,6 @@ alert(user)
 const resultsURL = decodeURI(getParameter("quizResultsURL"));
 alert(resultsURL)
 
-alert("test2")
-
   let SummaryButtons = $("#summary-buttons");
 
   let ReviewingQuiz = false;
