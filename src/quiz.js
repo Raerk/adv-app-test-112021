@@ -625,6 +625,7 @@ const resultsURL = decodeURI(getParameter("quizResultsURL"));
     }
 
     $('#clickfunnels-redirect').unbind('click').click(function(){
+      alert(buildResultsURL());
       window.location.replace(buildResultsURL());
     });
 
