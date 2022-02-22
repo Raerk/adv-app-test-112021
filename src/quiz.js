@@ -2,15 +2,11 @@ import getParameter from "./user.js";
 
 import quizQuestions from "./quiz-questions.js";
 
-
 $(document).ready(function () {
 
 const user = getParameter("user");
-if(user!=null)
-alert(user)
 
 const resultsURL = decodeURI(getParameter("quizResultsURL"));
-alert(resultsURL)
 
   let SummaryButtons = $("#summary-buttons");
 
@@ -45,6 +41,8 @@ alert(resultsURL)
 
   let UserAnswers = [];
   let UserAnswersElement = [];
+
+  let PointsResults = 0;
 
   // TIMER
 
@@ -456,7 +454,7 @@ alert(resultsURL)
     let CorrectResults = CorrectAnswers;
     let IncorrectResults = IncorrectAnswers;
     let PercentageResults = Math.round((CorrectAnswers/TotalQuestions)*100);
-    let PointsResults = CorrectAnswers*100;
+    PointsResults = CorrectAnswers*100;
 
     $('#results-correct').text(CorrectResults);
     $('#results-incorrect').text(IncorrectResults);
@@ -618,15 +616,16 @@ alert(resultsURL)
 
 
 
+
     // End Quiz Button: Send to Clickfunnels
 
     function buildResultsURL(){
-      let tempURL = resultsURL+"?user="+user+"&?points="+PointsResults;
+      let tempURL = encodeURI(resultsURL)+"?user="+user+"&?points="+PointsResults;
       return tempURL;
     }
 
     $('#clickfunnels-redirect').unbind('click').click(function(){
-      window.location=buildResultsURL();
+      window.location.replace(buildResultsURL());
     });
 
 
