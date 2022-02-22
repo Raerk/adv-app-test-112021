@@ -619,4 +619,16 @@ $(document).ready(function () {
 
 
 
+    // End Quiz Button: Send to Clickfunnels
+
+    function buildResultsURL(){
+      let tempURL = resultsURL+"?user="+user+"&?points="+PointsResults;
+      return tempURL;
+    }
+
+    $('#clickfunnels-redirect').unbind('click').click(function(){
+      window.location=buildResultsURL();
+    });
+
+
 });
