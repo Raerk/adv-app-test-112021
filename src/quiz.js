@@ -7,7 +7,6 @@ if(user!=null)
 alert(user)
 
 const resultsURL = getParameter("quizResultsURL")
-if(resultsURL!=null)
 alert(resultsURL)
 
 
