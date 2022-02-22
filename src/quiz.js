@@ -6,8 +6,12 @@ const user = getParameter("user");
 if(user!=null)
 alert(user)
 
+alert("test")
+
 const resultsURL = getParameter("quizResultsURL")
 alert(resultsURL)
+
+alert("test2")
 
 
 $(document).ready(function () {
