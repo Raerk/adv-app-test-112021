@@ -2,8 +2,13 @@ import getParameter from "./user.js";
 
 import quizQuestions from "./quiz-questions.js";
 
+const user = getParameter("user");
+if(user!=null)
+alert(user)
 
-alert (getParameter("user"));
+const resultsURL = getParameter("quizResultsURL")
+if(resultsURL!=null)
+alert(resultsURL)
 
 
 $(document).ready(function () {
