@@ -5,8 +5,8 @@ import quizQuestions from "./quiz-questions.js";
 $(document).ready(function () {
 
 const user = getParameter("user");
+const resultsURL = getParameter("quizResultsURL");
 
-const resultsURL = decodeURI(getParameter("quizResultsURL"));
 
   let SummaryButtons = $("#summary-buttons");
 
@@ -620,12 +620,11 @@ const resultsURL = decodeURI(getParameter("quizResultsURL"));
     // End Quiz Button: Send to Clickfunnels
 
     function buildResultsURL(){
-      let tempURL = encodeURI(resultsURL)+"?user="+user+"&?points="+PointsResults;
+      let tempURL = encodeURI(resultsURL)+"?user="+user+"&points="+PointsResults;
       return tempURL;
     }
 
     $('#clickfunnels-redirect').unbind('click').click(function(){
-      alert(buildResultsURL());
       window.location.replace(buildResultsURL());
     });
 
