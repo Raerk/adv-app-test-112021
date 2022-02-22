@@ -2,6 +2,11 @@ import getParameter from "./user.js";
 
 import quizQuestions from "./quiz-questions.js";
 
+
+$(document).ready(function () {
+
+  alert("test")
+
 const user = getParameter("user");
 if(user!=null)
 alert(user)
@@ -12,9 +17,6 @@ const resultsURL = getParameter("quizResultsURL")
 alert(resultsURL)
 
 alert("test2")
-
-
-$(document).ready(function () {
 
   let SummaryButtons = $("#summary-buttons");
 
