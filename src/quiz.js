@@ -620,7 +620,7 @@ const resultsURL = getParameter("quizResultsURL");
     // End Quiz Button: Send to Clickfunnels
 
     function buildResultsURL(){
-      let tempURL = encodeURI(resultsURL)+"?name="+user+"&points="+PointsResults;
+      let tempURL = encodeURI(resultsURL)+"?user="+user+"&points="+PointsResults;
       return tempURL;
     }
 
