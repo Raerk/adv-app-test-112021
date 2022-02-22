@@ -17,25 +17,38 @@ html {
   background: black;
 }
 
-.preview{
-  display: inline-block;
-  width: 3000px;
-}
-
-.preview>.main-view{
-  float: left;
-  margin-left: 30px;
+.root{
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-view {
   width: 375px;
-  height: 812px;
+  float: left;
+  margin-right: 20px;
+  margin-left: 20px;
+  height: 100vh;
+  max-height: 812px;
+  max-height: 750px;
   box-sizing: border-box;
   display: block;
   position: relative;
   background: url("../images/app-background.png");
   background-size: cover;
-  margin: 0 auto;
+}
+
+@media(max-width:768px){
+  .root{
+    display: inline-block;
+  }
+  .main-view{
+    margin-right: 20px;
+    margin-left: 0px;
+  }
 }
 
 .main-content {
@@ -43,7 +56,7 @@ html {
   display: block;
   position: relative;
   box-sizing: border-box;
-  height: 300px;
+  height: 30%;
   margin-top: 0px;
 }
 
@@ -68,10 +81,12 @@ html {
 
 /* Headers */
 
-header .min-header {
+header.min-header {
   width: 100%;
   position: relative;
   z-index: 10;
+  /* HIDDEN TEMPORARILY FOR DESKTOP PROTOTYPE */
+  opacity: 0;
 }
 
 /* Top Content */
@@ -80,7 +95,8 @@ header .min-header {
   position: relative;
   display: block;
   width: 100%;
-  height: 285px;
+  height:30%;
+  min-height: 245px;
   padding-top: 10px;
 }
 
@@ -270,14 +286,15 @@ margin-top: 180px;
   border-radius: 15px;
   display: block;
   position: relative;
-  height: 200px;
+  height: 30vh;
+  min-height: 160px;
   margin-right: 5%;
   margin-left: 5%;
-  margin-top: -155px;
+  margin-top: -115px;
 }
 
 .box.large {
-  height: 260px;
+ /* height: 220px;*/
   transition: 500ms all;
 }
 
@@ -350,7 +367,8 @@ margin-top: 180px;
   padding-right: 20px;
   padding-bottom: 10px;
   overflow-y: scroll;
-  height: 190px;
+  height: calc(100% - 60px);
+  transition: 300ms all;
 }
 
 .box .scrolling-overlay {
@@ -358,6 +376,7 @@ margin-top: 180px;
   width: 100%;
   height: 55px;
   position: absolute;
+  bottom: 0;
   z-index: 3;
   margin-top: -55px;
   border-bottom-left-radius: 15px;
@@ -379,22 +398,34 @@ margin-top: 180px;
   margin: 0 auto;
   position: relative;
   display: block;
-  margin-top: 48px;
+  margin-top: 6vh;
   cursor: pointer;
   transition: 500ms all;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-flow: wrap;
+  /*align-content: flex-end;*/
 }
 
 .answers .option {
+  display: flex;
   width: 100%;
-  margin-top: 20px;
+  align-content: flex-start;
+  align-items: center;
   position: relative;
   box-sizing: border-box;
-  display: block;
   background: #ffffff;
   box-shadow: 0px 5px 20px rgba(111, 23, 120, 0.35);
   border-radius: 10px;
   font-size: 13px;
-  padding: 16px 17px 16px 19px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-bottom: 3vh;
+  height: 7vh;
+  max-height: 50px;
   transition: 300ms all;
   border: 2px solid #fff;
 }
@@ -402,13 +433,14 @@ margin-top: 180px;
 .answers .option:after{
   font-family: "Font Awesome 6 Free";
   font-size: 11px;
-  content:'\f105';
-  float: right;
+  content:'';
+  position: absolute;
+  right: 17px;
   width: 14px;
   height: 14px;
   border: 2px solid #E5E5E5;
   text-align: center;
-  margin-top: -2px;
+  margin-top: -1px;
   border-radius: 100%;
   transition: 300ms all;
   color: #fff;
@@ -424,6 +456,7 @@ margin-top: 180px;
 }
 
 .answers .option.clicked:after{
+  content:'\f105';
   background: #C32FE4;
   border: 2px solid #C32FE4;
 }
@@ -466,6 +499,26 @@ margin-top: 180px;
   border: 2px solid #19AC9D;
   content:'\f00c';
 }
+
+
+/* Question Dynamic Area */
+
+#question{
+  transition: 500ms all;
+}
+
+#question-area{
+
+}
+
+.question-large{
+  height: 60vh !important;
+}
+
+.full-height{
+  height: 100% !important;
+}
+
 
 /*
 .answers .option:active{
@@ -533,7 +586,7 @@ margin-top: 180px;
   z-index: 2;
   width: 347px;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 20px;
   background: #FFFFFF;
   box-shadow: 0px 5px 30px rgba(111, 23, 120, 0.35);
   border-radius: 15px;
@@ -671,7 +724,8 @@ margin-top: 12px;
   position: relative;
   margin: 0 auto;
   width: 300px;
-  margin-top: 30px;
+  height: 20vh;
+  transition: 300ms all;
 }
 
 
@@ -679,7 +733,7 @@ margin-top: 12px;
 .summary-buttons .button-group{
   width: 50%;
   flex: 50%;
-  margin-top: 50px;
+  margin-top: 5vh;
 }
 
 .summary-buttons .button-group button{
@@ -697,6 +751,16 @@ margin-top: 12px;
   font-size:12px;
   margin-top: 10px;
   width: 100%;
+  transition: 300ms all;
+}
+
+.summary-buttons .button-group button.active{
+  background: white;
+  border: 2px solid #7000CF;
+}
+
+.summary-buttons .button-group .label.active{
+  color: #7000CF;
 }
 
 .summary-buttons .button-group button.replay{
@@ -736,7 +800,57 @@ margin-top: 12px;
 }
 
 
+/* Review Controls */
 
+.review-controls{
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  z-index: 100;
+  padding: 20px;
+  width: 100%;
+  top: 25px;
+  justify-content: space-evenly;
+}
+
+.review-controls button{
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  border: 2px solid rgba(255,255,255,0.2);
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 200ms all;
+  cursor: pointer;
+}
+
+.review-controls button i{
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.review-controls button.right i{
+  margin-left: -2px;
+}
+
+.review-controls button.left i{
+  margin-right: -2px;
+}
+
+.review-controls button:hover{
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
+}
+
+.review-controls button:hover i{
+  color: #6824BE;
+}
+
+.review-controls button:active{
+  transform: scale(0.80);
+}
 
 
 /* Leaderboard */
@@ -1051,4 +1165,21 @@ font-size: 12px;
   }
 }
 
-/*TEST*/
+/* Auxiliary Animations */
+
+.unclickable{
+  pointer-events: none;
+  cursor: default !important;
+}
+
+.faded{
+  opacity: 0.3;
+}
+
+.add-transition{
+  transition: 150ms all;
+}
+
+.push-button{
+  transform: scale(0.7);
+}

@@ -21,7 +21,7 @@ quizQuestions = {
         "Example Incorrect Answer 6"
       ],
       "answer": "The Correct Answer Here"
-    },
+    },/*
     {
       "question": "From the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.\nFrom the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.\nFrom the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.\nFrom the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.",
       "options": [
@@ -31,7 +31,7 @@ quizQuestions = {
         "Example Incorrect Answer C"
       ],
       "answer": "Correct Answer"
-    },
+    },*/
     ]
 }
 
