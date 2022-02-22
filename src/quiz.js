@@ -1,7 +1,9 @@
+import getParameter from "./user.js";
+
 import quizQuestions from "./quiz-questions.js";
 
 
-
+alert (getParameter("user"));
 
 
 $(document).ready(function () {
