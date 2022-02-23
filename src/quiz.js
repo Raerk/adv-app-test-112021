@@ -4,7 +4,7 @@ import quizQuestions from "./quiz-questions.js";
 
 $(document).ready(function () {
 
-const user = getParameter("user");
+const username = getParameter("username");
 const resultsURL = getParameter("quizResultsURL");
 
 
@@ -748,7 +748,7 @@ const resultsURL = getParameter("quizResultsURL");
     // End Quiz Button: Send to Clickfunnels
 
     function buildResultsURL(){
-      let tempURL = encodeURI(resultsURL)+"?user="+user+"&points="+PointsResults;
+      let tempURL = encodeURI(resultsURL)+"?username="+username+"&points="+PointsResults;
       return tempURL;
     }
 
