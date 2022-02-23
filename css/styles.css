@@ -295,7 +295,7 @@ margin-top: 180px;
 
 .box.large {
  /* height: 220px;*/
-  transition: 500ms all;
+  transition: 400ms all;
 }
 
 .box .header {
@@ -368,7 +368,7 @@ margin-top: 180px;
   padding-bottom: 10px;
   overflow-y: scroll;
   height: calc(100% - 60px);
-  transition: 300ms all;
+  /*transition: 300ms all;*/
 }
 
 .box .scrolling-overlay {
@@ -380,6 +380,7 @@ margin-top: 180px;
   z-index: 3;
   margin-top: -55px;
   border-bottom-left-radius: 15px;
+  transition: 500ms;
   border-bottom-right-radius: 15px;
   background: linear-gradient(
     180deg,
@@ -504,7 +505,7 @@ margin-top: 180px;
 /* Question Dynamic Area */
 
 #question{
-  transition: 500ms all;
+  transition: 200ms all;
 }
 
 #question-area{
@@ -512,7 +513,7 @@ margin-top: 180px;
 }
 
 .question-large{
-  height: 60vh !important;
+  height: auto !important;
 }
 
 .full-height{
@@ -571,6 +572,7 @@ margin-top: 180px;
   font-size: 60px;
   text-align: center;
   color: #fff;
+  transition: 500ms;
 }
 
 .points-text-label{
@@ -699,6 +701,7 @@ margin-top: 180px;
   font-size: 18px;
   text-align: center;
   margin-top: -13px;
+  transition: 500ms all;
 }
 
 
@@ -711,6 +714,24 @@ margin-top: 12px;
 
 .invisible {
   opacity: 0;
+}
+
+
+/* ----- Quiz Complete Message ------*/
+.quiz-complete-message{
+z-index: 1;
+display: flex;
+margin: 0 auto;
+width: 100%;
+height: 100%;
+margin-top: -10px;
+position: absolute;
+text-align: center;
+justify-content: center;
+align-items: center;
+transition: 500ms all;
+font-size: 30px;
+color: white;
 }
 
 

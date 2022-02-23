@@ -57,12 +57,6 @@ const resultsURL = getParameter("quizResultsURL");
 
   let el_answerGroup = $(".answers");
 
-  let el_currentCorrectAnswers = $("#correct-answers");
-  let el_currentIncorrectAnswers = $("#incorrect-answers");
-  let el_currentQuestionNumber = $("#question-number");
-
-  let el_questionArea = $('#question-area');
-
   --------------------------------*/
 
 
