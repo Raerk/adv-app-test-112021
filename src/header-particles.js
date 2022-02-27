@@ -273,3 +273,8 @@ requestAnimationFrame(update);
 
 
 });
+
+
+new ResizeSensor($('#quiz-view .main-content'), function() {
+  console.log('myelement has been resized');
+});

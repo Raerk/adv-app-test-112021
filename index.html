@@ -21,7 +21,7 @@
 
   <div class="root">
 
-    <div class="main-view">
+    <div class="main-view" id="quiz-view">
 
       <div class="review-controls invisible">
         <button class="review-previous right faded" id=""><i class="fa-solid fa-angle-left"></i></button>
@@ -80,27 +80,32 @@
 
         <!-- QUESTION AREA -->
         
-        <div class="box large invisible" id="question-area"> 
-          <div class="header">
-            <div class="title">Question</div>
-            <div id="question-number" class="title question text-purple"></div>
-            <div id="incorrect-answers" class="result incorrect"></div>
-            <div id="correct-answers" class="result correct"></div>
-          </div>
-          <div id="question" class="content">
-            <p>
 
-            </p>
-          </div>
-          <div class="scrolling-overlay"></div>
-        
-        </div>
+        <div class="quiz-container">
 
-        <div class="answers invisible">
-          <a id="answer1" class="option"></a>
-          <a id="answer2" class="option"></a>
-          <a id="answer3" class="option"></a>
-          <a id="answer4" class="option"></a>
+          <div class="box large invisible" id="question-area"> 
+            <div class="header">
+              <div class="title">Question</div>
+              <div id="question-number" class="title question text-purple"></div>
+              <div id="incorrect-answers" class="result incorrect"></div>
+              <div id="correct-answers" class="result correct"></div>
+            </div>
+            <div id="question" class="content">
+              <p>
+
+              </p>
+            </div>
+            <div class="scrolling-overlay"></div>
+          
+          </div>
+
+          <div class="answers invisible">
+            <a id="answer1" class="option"></a>
+            <a id="answer2" class="option"></a>
+            <a id="answer3" class="option"></a>
+            <a id="answer4" class="option"></a>
+          </div>
+
         </div>
 
       </div>
@@ -111,9 +116,9 @@
 
 
 
-    <div class="main-view">
+    <div class="main-view" id="review-view">
       <div class="main-content">
-        <div class="top-content">
+        <div class="top-content h-30">
           <header class="min-header">
             <button class="arrow-button"></button>
       
@@ -162,7 +167,7 @@
             <button class="replay" id="replay-quiz">
               <i></i>
             </button>
-            <div class="label">Replay</div>     
+            <div class="label">Replay Quiz</div>     
           </div>
   
           <div class="button-group">
@@ -186,7 +191,7 @@
             <div class="label">Home</div>  
           </div>-->
   
-          <button id="clickfunnels-redirect" class="" style="margin: 0 auto; margin-top: 40px; padding: 15px; background: purple; color: white; font-size: 12px;">PLACEHOLDER: SEND TO CLICKFUNNELS</button>
+          <button id="clickfunnels-redirect" class="submit-results-btn unclickable">Submit Results</button>
 
 
           </div>

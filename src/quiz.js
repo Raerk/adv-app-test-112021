@@ -2,35 +2,179 @@ import getParameter from "./user.js";
 
 import quizQuestions from "./quiz-questions.js";
 
+
+// Visual Styles and Animation Functions
+
+const VisualStyles = {
+
+  Clickable:
+  function(element){element.removeClass("unclickable faded");},
+  Unclickable: 
+  function(element){element.addClass("unclickable faded");},
+
+  Visible:
+  function(element){element.removeClass("invisible");},
+  Invisible:
+  function(element){element.addClass("invisible");},
+
+  Active:
+  function(element){element.addClass("active");},
+  Inactive:
+  function(element){element.removeClass("active");},
+
+  Uninteractable:
+  function(element){element.addClass("unclickable");},
+
+  FullHeight:
+  function(element){element.addClass("full-height");},
+
+  RegularHeight:
+  function(element){element.removeClass("full-height");},  
+
+  Answers: {
+    Clicked:
+    function(element){element.addClass("clicked");},
+    Correct:
+    function(element){element.addClass("correct");},
+    Incorrect:
+    function(element){element.addClass("incorrect");},
+    CorrectFix:
+    function(element){element.addClass("correctfix");},
+
+    Unselect:
+    function(element){element.removeClass("clicked");},
+    Clear:
+    function(element){element.removeClass("clicked correct incorrect correctfix");},
+
+
+  }
+
+}
+
+function PressButtonAnimation(element){
+
+  element.addClass('add-transition');
+  element.addClass('push-button');
+  setTimeout(function(){
+    element.removeClass('push-button');
+  },150);
+  setTimeout(function(){
+    element.removeClass('add-transition');
+  },300);
+
+}
+
+function fadeInOutUpdate(element,text,delay){
+  VisualStyles.Invisible(element);
+  
+  setTimeout(function(){
+    element.text(text);
+    VisualStyles.Visible(element);
+  }
+  ,delay);
+}
+
+
+
+
+// Quiz Logic
+
+
 $(document).ready(function () {
 
 const username = getParameter("username");
 const resultsURL = getParameter("quizResultsURL");
 
 
-  let SummaryButtons = $("#summary-buttons");
+  /*--------------------------------
+  DOM ELEMENTS
+  --------------------------------*/
+
+  // Quiz Particle Header
+
+  let el_QuizContainer = $('#quiz-view .main-content .quiz-container');
+
+  // Quiz Review Controls
+
+  let el_ReviewControls = $(".review-controls");
+
+  let el_ReviewNextButton = $(".review-next");
+  let el_ReviewPreviousButton = $(".review-previous");
+
+  // Quiz Timer
+
+  let el_QuestionTimer = $("#question-timer");
+  let el_TimerCircle = document.querySelector(".progress-ring__circle");
+  let el_TimerCircleFill = document.querySelector(".progress-ring");
+  let el_QuestionSeconds = $(".seconds");
+
+  // Quiz Question Box
+
+  let el_CurrentCorrectAnswers = $("#correct-answers");
+  let el_CurrentIncorrectAnswers = $("#incorrect-answers");
+  let el_CurrentQuestionNumber = $("#question-number");
+
+  let el_QuestionArea = $('.box');
+
+  let el_QuestionParagraph = $('#question p');
+  let el_QuestionParagraphWrapper = $('#question');
+
+  let el_QuestionBottomOverlay = $(".scrolling-overlay");
+
+  // Answers
+
+  let el_AnswerGroup = $('.answers');
+
+  let el_Answer1 = $('#answer1');
+  let el_Answer2 = $('#answer2');  
+  let el_Answer3 = $('#answer3');
+  let el_Answer4 = $('#answer4');
+
+  // Quiz Complete Message
+
+  let el_QuizCompleteMessage = $('#quiz-complete-message');
+
+
+  // Quiz Results Page
+
+  let el_SummaryButtons = $("#summary-buttons");
+
+  let el_ReviewAnswersButton = $('#review-answers');
+  let el_ReviewAnswersButtonLabel = $('#review-label')
+
+  let el_ResultsPointsText = $('#results-points');
+  let el_ResultsPercentageText = $('#results-percentage');
+  let el_ResultsCorrectText = $('#results-correct');
+  let el_ResultsIncorrectText = $('#results-incorrect');
+
+  let el_ReplayQuizButton = $('#replay-quiz');
+
+  let el_ClickFunnelsRedirect = $('#clickfunnels-redirect');
+
+
+  
+  /*--------------------------------
+  LOGIC VARIABLES
+  --------------------------------*/
+
+  const QuizQuestions = quizQuestions.AIFluencyQuiz;
+  let TotalQuestions = quizQuestions.AIFluencyQuiz.length;
 
   let ReviewingQuiz = false;
 
   let QuizActive = false;
 
-  let QuestionTimer = 5;
+  let QuestionTimer = 60;
 
   let QuestionTimerElement;
 
   var DisplayingIncorrectAnswer = false;
 
-  const QuizQuestions = quizQuestions.AIFluencyQuiz;
-
   let CurrentQuestion = 0;
-
-  let TotalQuestions = quizQuestions.AIFluencyQuiz.length;
 
   let CorrectAnswers = 0;
 
   let IncorrectAnswers = 0;
-
-  CurrentQuestion = 1;
 
   let CanChangeAnswer = true;
 
@@ -44,81 +188,53 @@ const resultsURL = getParameter("quizResultsURL");
 
   let PointsResults = 0;
 
-
-  /*--------------------------------
-  Temp Elements. Need to update:
-
-  let el_answer1 = $('#answer-1');
-  let el_answer2 = $('#answer-2');  
-  let el_answer3 = $('#answer-3');
-  let el_answer4 = $('#answer-4');
-
-  let el_questionTimer = $("#question-timer");
-
-  let el_answerGroup = $(".answers");
-
-  let el_currentCorrectAnswers = $("#correct-answers");
-  let el_currentIncorrectAnswers = $("#incorrect-answers");
-  let el_currentQuestionNumber = $("#question-number");
-
-  let el_questionArea = $('#question-area');
-
-  --------------------------------*/
-
-
   let EnlargedQuestion = false;
 
   let initialQuestionHeight;
 
   let canClickQuestion = true;
 
-  // TIMER
 
-  var circle = document.querySelector(".progress-ring__circle");
-  var radius = circle.r.baseVal.value;
-  var circumference = radius * 2 * Math.PI;
-
-  circle.style.strokeDasharray = `${circumference} ${circumference}`;
-  circle.style.strokeDashoffset = `${circumference}`;
+  // Timer Logic
 
 
+  let radius = el_TimerCircle.r.baseVal.value;
+  let circumference = radius * 2 * Math.PI;
 
+  el_TimerCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+  el_TimerCircle.style.strokeDashoffset = `${circumference}`;
 
-  var QuestionSeconds = $(".seconds");
-
-  var QuestionCounter = QuestionTimer;
-  QuestionSeconds.text(QuestionCounter);
+  let QuestionCounter = QuestionTimer;
+  el_QuestionSeconds.text(QuestionCounter);
 
 
   function setProgress(percent) {
     const offset = circumference - (percent / 100) * circumference;
-    circle.style.strokeDashoffset = offset;
+    el_TimerCircle.style.strokeDashoffset = offset;
   }
 
   function StartQuestionTimer() {
 
     setProgress(0);
     QuestionTimerElement = setInterval(function () {
-      circle.style.transition = QuestionTimer + "s linear stroke-dashoffset";
-      QuestionSeconds.textContent = "" + QuestionCounter;
+      el_TimerCircle.style.transition = QuestionTimer + "s linear stroke-dashoffset";
+      el_QuestionSeconds.textContent = "" + QuestionCounter;
 
       console.log(QuestionCounter);
 
       if (QuestionCounter > 0) {
-        QuestionSeconds.text(QuestionCounter);
+        el_QuestionSeconds.text(QuestionCounter);
         QuestionCounter -= 1;
 
       } else {
         // If counter gets to 0, incorrect answer and move to next question
-        QuestionSeconds.text(QuestionCounter);
+        el_QuestionSeconds.text(QuestionCounter);
         QuestionCounter = 0;
         StopQuestionTimer();
         if (!DisplayingIncorrectAnswer) AnimateTimeOutAnswer();
-        //IncorrectAnswer();
-        //MoveToNextQuestion();
       }
 
-      circle.style.opacity = "1";
+      el_TimerCircle.style.opacity = "1";
       setProgress(100);
     }, 1000);
   }
@@ -128,19 +244,44 @@ const resultsURL = getParameter("quizResultsURL");
     clearInterval(QuestionTimerElement);
   }
 
+
   /* ---------- Quiz Logic ---------- */
 
-  // INITIALIZE QUIZ
+
+  initializeQuiz();
+
+
+  // INITIALIZE QUIZ: Reset the values and hide / show the elements
 
   function initializeQuiz(){
 
+    // If the user enlarged the question box (while reviewing for example), then reset the size by shortening.
     if(EnlargedQuestion){
       shortenQuestion();
     }
 
-      $("#question-timer").removeClass("invisible");
-      $(".box.large").removeClass("invisible");
-      $(".answers").removeClass("invisible");
+    // Display the timer, question and answer boxes.
+
+    VisualStyles.Visible(el_QuestionTimer);
+    VisualStyles.Visible(el_QuestionArea);
+    VisualStyles.Visible(el_AnswerGroup);
+
+    // Hide the 'Review' elements from the quiz and set ReviewingQuiz to false
+
+    ReviewingQuiz = false;
+
+    VisualStyles.Unclickable(el_SummaryButtons);
+
+    VisualStyles.Uninteractable(el_ClickFunnelsRedirect);
+
+    VisualStyles.Inactive(el_ReviewAnswersButton);
+    VisualStyles.Inactive(el_ReviewAnswersButtonLabel);
+
+    VisualStyles.Invisible(el_ReviewControls);
+    VisualStyles.Unclickable(el_ReviewNextButton);
+    VisualStyles.Unclickable(el_ReviewPreviousButton);
+
+    // Reset the quiz variables values
 
     QuizAnwsers = [];
     QuizAnwsersElement = [];
@@ -148,21 +289,18 @@ const resultsURL = getParameter("quizResultsURL");
     UserAnswers = [];
     QuizAnwsersElement = [];
 
-    DisplayingIncorrectAnswer = false;
-
-    CurrentQuestion = 0;
-
     TotalQuestions = quizQuestions.AIFluencyQuiz.length;
-
-    CorrectAnswers = 0;
-
-    IncorrectAnswers = 0;
-
     CurrentQuestion = 1;
 
+    CorrectAnswers = 0;
+    IncorrectAnswers = 0;
+
+    DisplayingIncorrectAnswer = false;
     CanChangeAnswer = true;
 
     StartedSelectionTimer = false;
+
+    // Initialize Quiz
 
     UpdateQuiz();
     AwaitAnswers(CurrentQuestion);
@@ -170,56 +308,50 @@ const resultsURL = getParameter("quizResultsURL");
 
     QuizActive = true;
 
-    MakeUnclickable(SummaryButtons);
-
-    ReviewingQuiz = false;
-    MakeInactive($('#review-answers'));
-    MakeInactive($('#review-label'));
-
-    $(".review-controls").addClass('invisible');
-    MakeUnclickable($(".review-next"));
-    MakeUnclickable($(".review-previous"));
-
-
   }
 
 
   function endQuiz(){
     QuizActive = false;
-    $('#quiz-complete-message').removeClass('invisible');
-    MakeClickable(SummaryButtons);
+
+    // Hide the whole quiz area (including background), to display the full-height message
+    VisualStyles.Invisible(el_QuizContainer);
+    VisualStyles.Uninteractable(el_AnswerGroup);
+    VisualStyles.Uninteractable(el_QuestionArea);
+
+    setTimeout(function(){VisualStyles.Visible(el_QuizCompleteMessage)},1000);
+    setTimeout(function(){VisualStyles.Clickable(el_SummaryButtons)},1000);
+    setTimeout(function(){VisualStyles.Clickable(el_ClickFunnelsRedirect)},1000);
   }
 
-  initializeQuiz();
+  
 
-
-  // Add New Questions to the view and determine the correct answer for the round
 
   function LoadNewQuestion(questionNumber) {
     const TempQuestion = QuizQuestions[questionNumber - 1];
 
     const TempAnswer = QuizQuestions[questionNumber - 1].answer;
 
-    $("#question p").text(TempQuestion.question);
+    el_QuestionParagraph.text(TempQuestion.question);
 
-    $("#answer1").text(TempQuestion.options[0]);
-    $("#answer2").text(TempQuestion.options[1]);
-    $("#answer3").text(TempQuestion.options[2]);
-    $("#answer4").text(TempQuestion.options[3]);
+    el_Answer1.text(TempQuestion.options[0]);
+    el_Answer2.text(TempQuestion.options[1]);
+    el_Answer3.text(TempQuestion.options[2]);
+    el_Answer4.text(TempQuestion.options[3]);
 
     // Get Current Correct Answer
 
-    if ($("#answer1").text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = $("#answer1");
+    if (el_Answer1.text() == TempAnswer) {
+      QuizAnwsersElement[CurrentQuestion-1] = el_Answer1;
     }
-    if ($("#answer2").text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = $("#answer2");
+    if (el_Answer2.text() == TempAnswer) {
+      QuizAnwsersElement[CurrentQuestion-1] = el_Answer2;
     }
-    if ($("#answer3").text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = $("#answer3");
+    if (el_Answer3.text() == TempAnswer) {
+      QuizAnwsersElement[CurrentQuestion-1] = el_Answer3;
     }
-    if ($("#answer4").text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = $("#answer4");
+    if (el_Answer4.text() == TempAnswer) {
+      QuizAnwsersElement[CurrentQuestion-1] = el_Answer4;
     }
 
     QuizAnwsers[CurrentQuestion-1] = QuizAnwsersElement[CurrentQuestion-1].text();
@@ -229,14 +361,19 @@ const resultsURL = getParameter("quizResultsURL");
   // Select answer: this will select a new answer or change the previously selected answer
 
   function SelectedAnswer(element) {
-    $("#question-timer").addClass("invisible");
 
-    $("#answer1").removeClass("clicked");
-    $("#answer2").removeClass("clicked");
-    $("#answer3").removeClass("clicked");
-    $("#answer4").removeClass("clicked");
+    // Hide the timer
+    VisualStyles.Invisible(el_QuestionTimer);
 
-    element.addClass("clicked");
+    // Unselect all the answers in case the user is re-selecting an answer
+    VisualStyles.Answers.Unselect(el_Answer1);
+    VisualStyles.Answers.Unselect(el_Answer2);
+    VisualStyles.Answers.Unselect(el_Answer3);
+    VisualStyles.Answers.Unselect(el_Answer4);
+
+    // Style the currently selected answer
+    VisualStyles.Answers.Clicked(element);
+
     UserAnswersElement[CurrentQuestion-1] = element;
     UserAnswers[CurrentQuestion-1] = UserAnswersElement[CurrentQuestion-1].text();
   }
@@ -245,7 +382,7 @@ const resultsURL = getParameter("quizResultsURL");
 
 
 
-  // Reset the StartSelectionTimer to false and CanChangeAnswer to true; to work in the new round.
+  // Reset the StartSelectionTimer to false and CanChangeAnswer to true; so that it can work in the new round.
 
   function EnableNewQuestion() {
     CanChangeAnswer = true;
@@ -267,15 +404,10 @@ const resultsURL = getParameter("quizResultsURL");
   // Await answer selection function. This will check for the clicks, start the timer in the first click, and enable to switch the answer if within the timer limit.
 
   function AwaitAnswers(questionNumber) {
-    let answer1 = $("#answer1");
-    let answer2 = $("#answer2");
-    let answer3 = $("#answer3");
-    let answer4 = $("#answer4");
-
-    TriggerAnswer(answer1);
-    TriggerAnswer(answer2);
-    TriggerAnswer(answer3);
-    TriggerAnswer(answer4);
+    TriggerAnswer(el_Answer1);
+    TriggerAnswer(el_Answer2);
+    TriggerAnswer(el_Answer3);
+    TriggerAnswer(el_Answer4);
   }
 
   function TriggerAnswer(element){
@@ -283,6 +415,7 @@ const resultsURL = getParameter("quizResultsURL");
       if (!DisplayingIncorrectAnswer) {
         if (!StartedSelectionTimer) {
           StopQuestionTimer();
+          // Start the second timer to give some leeway to the user to change the answer
           StartToleranceTimer();
         }
         if (CanChangeAnswer) {
@@ -306,22 +439,28 @@ const resultsURL = getParameter("quizResultsURL");
   // Update Quiz View Information and trigger the await for answers function.
 
   function UpdateQuiz() {
-      $("#correct-answers").text(CorrectAnswers);
-      $("#incorrect-answers").text(IncorrectAnswers);
-      $("#question-number").text(CurrentQuestion + "/" + TotalQuestions);
+
+      ClearAllAnswers();
+
+      el_CurrentCorrectAnswers.text(CorrectAnswers);
+      el_CurrentIncorrectAnswers.text(IncorrectAnswers);
+      el_CurrentQuestionNumber.text(CurrentQuestion + "/" + TotalQuestions);
 
       DisplayingIncorrectAnswer = false;
 
       LoadNewQuestion(CurrentQuestion);
 
       QuestionCounter = QuestionTimer;
-      circle.style.transition = "0s linear stroke-dashoffset";
+      el_TimerCircle.style.transition = "0s linear stroke-dashoffset";
       setProgress(0);
 
       AwaitAnswers(CurrentQuestion);
 
-      MakeClickable($("#question-area"));
-      MakeClickable($('.answers'));
+      VisualStyles.Clickable(el_QuestionArea);
+      VisualStyles.Clickable(el_AnswerGroup);
+
+      // Reset the timer to update the remaining time to the original settings
+      el_QuestionSeconds.text(QuestionTimer);
 
   }
 
@@ -349,23 +488,24 @@ const resultsURL = getParameter("quizResultsURL");
     shortenQuestion();    
     }
     // We also make the answers and question unclickable
-    //MakeUninteractable($('#question-area'));
-    //MakeUninteractable($('.answers'));
+    //VisualStyles.Uninteractable(el_QuestionArea);
+    //VisualStyles.Uninteractable(el_AnswerGroup);
 
 
     // Check if answer was correct or incorrect
     if (result == "correct") {
-      selectedAnswer.removeClass("clicked");
-      selectedAnswer.addClass("correct");
+      VisualStyles.Answers.Unselect(selectedAnswer);
+      VisualStyles.Answers.Correct(selectedAnswer);
       CorrectAnswer();
     } else {
       if(UserAnswers[CurrentQuestion-1]!=""){
-        selectedAnswer.removeClass("clicked");
-        selectedAnswer.addClass("incorrect");
-        QuizAnwsersElement[CurrentQuestion-1].addClass("correctfix");
+        VisualStyles.Answers.Unselect(selectedAnswer);
+        VisualStyles.Answers.Incorrect(selectedAnswer);
+
+        VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
         IncorrectAnswer();
       }else{
-        QuizAnwsersElement[CurrentQuestion-1].addClass("correctfix");
+        VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
         IncorrectAnswer();
       }
     }
@@ -373,28 +513,18 @@ const resultsURL = getParameter("quizResultsURL");
   }
 
   // Quick Fade Transition to Update Quiz
-
-  function ClearAnswerResults(element){
-      element.removeClass("correct");
-      element.removeClass("incorrect");
-      element.removeClass("clicked");
-      element.removeClass("correctfix");
-
-      var QuestionSeconds = $(".seconds");
-      
-      QuestionSeconds.text(QuestionTimer);
-
-  }
-
+  
   function ClearAllAnswers(){
-    ClearAnswerResults($('#answer1'));
-    ClearAnswerResults($('#answer2'));
-    ClearAnswerResults($('#answer3'));
-    ClearAnswerResults($('#answer4'));
+    VisualStyles.Answers.Clear(el_Answer1);
+    VisualStyles.Answers.Clear(el_Answer2);
+    VisualStyles.Answers.Clear(el_Answer3);
+    VisualStyles.Answers.Clear(el_Answer4);
+    el_QuestionSeconds.text(QuestionTimer);
   }
 
 
   function FadeInQuiz(delay){
+    ClearAllAnswers();
     setTimeout(ShowQuiz(),delay);
   }
 
@@ -404,21 +534,22 @@ const resultsURL = getParameter("quizResultsURL");
   }
 
   function HideQuiz(){
-    $(".box.large").addClass("invisible");
-    $(".answers").addClass("invisible");
-    $("#question-timer").addClass("invisible");
+    VisualStyles.Invisible(el_QuestionArea);
+    VisualStyles.Invisible(el_AnswerGroup);
+    VisualStyles.Invisible(el_QuestionTimer);
   }
 
   function ShowQuiz(){
-    $(".box.large").removeClass("invisible");
-    $(".answers").removeClass("invisible");
-    $("#question-timer").removeClass("invisible");
+    VisualStyles.Visible(el_QuestionArea);
+    VisualStyles.Visible(el_AnswerGroup);
+    VisualStyles.Visible(el_QuestionTimer);
   }
 
   function FadeQuizAnimation(){
     setTimeout(function () {
-      $(".box.large").addClass("invisible");
-      $(".answers").addClass("invisible");
+
+      VisualStyles.Invisible(el_QuestionArea);
+      VisualStyles.Invisible(el_AnswerGroup);
 
       ClearAllAnswers();
 
@@ -427,10 +558,11 @@ const resultsURL = getParameter("quizResultsURL");
       CurrentQuestion++;
       if (CurrentQuestion <= TotalQuestions) {
         UpdateQuiz();
-        QuestionSeconds.textContent = "" + QuestionCounter;
-        $(".box.large").removeClass("invisible");
-        $(".answers").removeClass("invisible");
-        $("#question-timer").removeClass("invisible");
+        el_QuestionSeconds.textContent = "" + QuestionCounter;
+
+        VisualStyles.Visible(el_QuestionArea);
+        VisualStyles.Visible(el_AnswerGroup);
+        VisualStyles.Visible(el_QuestionTimer);
 
         EnableNewQuestion();
       }else{
@@ -447,32 +579,37 @@ const resultsURL = getParameter("quizResultsURL");
         shortenQuestion();    
 
     // We also make the answers and question unclickable
-    MakeUninteractable($('#question-area'));
-    MakeUninteractable($('.answers'));
+    VisualStyles.Uninteractable(el_QuestionArea);
+    VisualStyles.Uninteractable(el_AnswerGroup);
 
     DisplayingIncorrectAnswer = true;
     UserAnswers[CurrentQuestion-1]="";
     IncorrectAnswer();
-    $(".progress-ring").addClass("timeout");
+    el_TimerCircleFill.classList.add("timeout");
     setTimeout(function () {
-      QuizAnwsersElement[CurrentQuestion-1].addClass("correctfix");
+      VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
     }, 1000);
 
     setTimeout(function () {
-      $(".box.large").addClass("invisible");
-      $(".answers").addClass("invisible");
-      $("#question-timer").addClass("invisible");
-      QuizAnwsersElement[CurrentQuestion-1].removeClass("correctfix");
+
+      VisualStyles.Invisible(el_QuestionArea);
+      VisualStyles.Invisible(el_AnswerGroup);
+      VisualStyles.Invisible(el_QuestionTimer);
+      VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
+
+      //QuizAnwsersElement[CurrentQuestion-1].removeClass("correctfix");
     }, 3000);
     setTimeout(function () {
-      $(".progress-ring").removeClass("timeout");
+      el_TimerCircleFill.classList.remove("timeout");
       CurrentQuestion++;
       if (CurrentQuestion <= TotalQuestions) {
         UpdateQuiz();
-        QuestionSeconds.textContent = "" + QuestionCounter;
-        $(".box.large").removeClass("invisible");
-        $(".answers").removeClass("invisible");
-        $("#question-timer").removeClass("invisible");
+        el_QuestionSeconds.textContent = "" + QuestionCounter;
+
+        VisualStyles.Visible(el_QuestionArea);
+        VisualStyles.Visible(el_AnswerGroup);
+        VisualStyles.Visible(el_QuestionTimer);
+
         EnableNewQuestion();
       }else{
         endQuiz();
@@ -484,7 +621,7 @@ const resultsURL = getParameter("quizResultsURL");
   /* Enlarge Question Area */
 
 
-  $("#question-area")
+  el_QuestionArea
     .unbind("click")
     .click(function () {
       if(!StartedSelectionTimer||ReviewingQuiz){
@@ -504,16 +641,18 @@ const resultsURL = getParameter("quizResultsURL");
 
       canClickQuestion = false;
 
-      initialQuestionHeight = $(".header").outerHeight(true)+$("#question").outerHeight(true);
+      initialQuestionHeight = $(".header").outerHeight(true)+el_QuestionParagraphWrapper.outerHeight(true);
 
-      let tempHeight = $("#question p").outerHeight(true)+$(".header").outerHeight(true)+15;
-      $(".box").height(''+tempHeight);
+      let tempHeight = el_QuestionParagraph.outerHeight(true)+$(".header").outerHeight(true)+15;
+      el_QuestionArea.height(''+tempHeight);
 
-      $("#question").addClass("full-height");
-      $(".answers").addClass("invisible");
-      $(".answers").addClass("unclickable");
-      $(".option").addClass("unclickable");
-      $(".scrolling-overlay").addClass("invisible");
+      el_QuestionParagraphWrapper.addClass("full-height");
+      
+      
+      VisualStyles.Invisible(el_AnswerGroup);
+      VisualStyles.Uninteractable(el_AnswerGroup);
+
+      VisualStyles.Invisible(el_QuestionBottomOverlay);
 
       EnlargedQuestion = true;
 
@@ -525,13 +664,14 @@ const resultsURL = getParameter("quizResultsURL");
 
       canClickQuestion = false;
 
-      $(".box").height(''+initialQuestionHeight);
+      el_QuestionArea.height(''+initialQuestionHeight);
 
-      $(".scrolling-overlay").removeClass("invisible");
-      $("#question").removeClass("full-height");
-      $(".answers").removeClass("invisible");
-      $(".answers").removeClass("unclickable");
-      $(".option").removeClass("unclickable");
+
+      VisualStyles.Visible(el_QuestionBottomOverlay);
+      el_QuestionParagraphWrapper.removeClass("full-height");
+      VisualStyles.Visible(el_AnswerGroup);
+      VisualStyles.Clickable(el_AnswerGroup);
+
 
       EnlargedQuestion = false;
 
@@ -553,10 +693,10 @@ const resultsURL = getParameter("quizResultsURL");
     PointsResults = CorrectAnswers*100;
 
 
-    fadeInOutUpdate($('#results-points'),PointsResults,500);
-    fadeInOutUpdate($('#results-percentage'),PercentageResults,600);
-    fadeInOutUpdate($('#results-correct'),CorrectResults,700);
-    fadeInOutUpdate($('#results-incorrect'),IncorrectResults,800);
+    fadeInOutUpdate(el_ResultsPointsText,PointsResults,500);
+    fadeInOutUpdate(el_ResultsPercentageText,PercentageResults,600);
+    fadeInOutUpdate(el_ResultsCorrectText,CorrectResults,700);
+    fadeInOutUpdate(el_ResultsIncorrectText,IncorrectResults,800);
  
 
 
@@ -568,7 +708,14 @@ const resultsURL = getParameter("quizResultsURL");
 
    function ReplayQuiz(){
     if(!QuizActive){
-      MakeInvisible($('#quiz-complete-message'));
+
+      // Show the quiz area and remove the quiz-complete message
+      VisualStyles.Visible(el_QuizContainer);
+      VisualStyles.Clickable(el_AnswerGroup);
+      VisualStyles.Clickable(el_QuestionArea);
+
+      VisualStyles.Invisible(el_QuizCompleteMessage);
+
       FadeOutQuiz(2000);
       FadeInQuiz(4000);
       setTimeout(initializeQuiz(),4000);
@@ -577,101 +724,63 @@ const resultsURL = getParameter("quizResultsURL");
 
 
 
-     $('#replay-quiz').unbind('click').click(function(){
+     el_ReplayQuizButton.unbind('click').click(function(){
      PressButtonAnimation($(this));
      ReplayQuiz();
 
 
-
-     $(".review-controls").addClass('invisible');
-     MakeUnclickable($(".review-next"));
-     MakeUnclickable($(".review-previous"));
+     VisualStyles.Invisible(el_ReviewControls);
+     VisualStyles.Unclickable(el_ReviewNextButton);
+     VisualStyles.Unclickable(el_ReviewPreviousButton);
 
      });
 
 
 
-   // Animation Auxiliaries
-   function MakeUninteractable(element){
-    element.addClass("unclickable");
-  }
+   // Visual & Animation Auxiliaries
 
-  function MakeInvisible(element){
-    element.addClass("invisible");
-  }
 
-  function MakeVisible(element){
-    element.removeClass("invisible");
-  }
 
-   function MakeUnclickable(element){
-      element.addClass("unclickable faded");
-   }
-
-   function MakeClickable(element){
-    element.removeClass("unclickable faded");
-  }
-
-  function MakeActive(element){
-    element.addClass("active");
-  }
-
-  function MakeInactive(element){
-    element.removeClass("active");
-  }
-
-   function PressButtonAnimation(element){
-
-      element.addClass('add-transition');
-      element.addClass('push-button');
-      setTimeout(function(){
-        element.removeClass('push-button');
-      },150);
-      setTimeout(function(){
-        element.removeClass('add-transition');
-      },300);
-
-   }
-
-   function fadeInOutUpdate(element,text,delay){
-      MakeInvisible(element);
-      
-      setTimeout(function(){
-        element.text(text);
-        MakeVisible(element);
-      }
-      ,delay);
-   }
 
 
 
    // Review Answers Logic
 
-    $('#review-answers').unbind('click').click(function(){
+    el_ReviewAnswersButton.unbind('click').click(function(){
 
       if(!QuizActive && !ReviewingQuiz){
 
+
+
+
         ReviewingQuiz = true;
+        CurrentQuestion = 1;
 
-        MakeInvisible($('#quiz-complete-message'));
-
-        $(".review-controls").removeClass('invisible');
-
-        MakeUnclickable($('.review-previous'));
-        MakeClickable($('.review-next'));
+        el_CurrentCorrectAnswers.text(CorrectAnswers);
+        el_CurrentIncorrectAnswers.text(IncorrectAnswers);
 
         PressButtonAnimation($(this));
 
-        MakeActive($('#review-answers'));
-        MakeActive($('#review-label'));
+        // Make the quiz area visible
+        VisualStyles.Visible(el_QuizContainer);
+        VisualStyles.Clickable(el_QuestionArea);
 
-        CurrentQuestion = 1;
+        VisualStyles.Invisible(el_QuizCompleteMessage);
 
-        $("#correct-answers").text(CorrectAnswers);
-        $("#incorrect-answers").text(IncorrectAnswers);
+        VisualStyles.Visible(el_ReviewControls);
 
-        $(".box.large").removeClass("invisible");
-        $(".answers").removeClass("invisible");
+        VisualStyles.Unclickable(el_ReviewPreviousButton);
+        VisualStyles.Clickable(el_ReviewNextButton);
+
+
+        VisualStyles.Active(el_ReviewAnswersButton);
+        VisualStyles.Active(el_ReviewAnswersButtonLabel);
+
+
+
+
+        VisualStyles.Visible(el_QuestionArea);
+        VisualStyles.Visible(el_AnswerGroup);
 
         ReviewQuiz(CurrentQuestion);
 
@@ -684,12 +793,12 @@ const resultsURL = getParameter("quizResultsURL");
     });
 
 
-    $('.review-next').unbind('click').click(function(){
+    el_ReviewNextButton.unbind('click').click(function(){
       if(CurrentQuestion<TotalQuestions)
       ReviewQuestion(1);
     });
 
-    $('.review-previous').unbind('click').click(function(){
+    el_ReviewPreviousButton.unbind('click').click(function(){
       if(CurrentQuestion>1)
       ReviewQuestion(-1);
     });
@@ -701,21 +810,21 @@ const resultsURL = getParameter("quizResultsURL");
       let result = CheckCorrectAnswer();
       AnimateAnswerResult(UserAnswersElement[CurrentQuestion-1],result,0);
 
-     // MakeClickable($("#question-area"));
-     // MakeClickable($('.answers'));
+     // VisualStyles.Clickable(el_QuestionArea);
+     // VisualStyles.Clickable(el_AnswerGroup);
 
       // Check to update if Previous or next question are clickable
 
       if(CurrentQuestion==1){
-        MakeUnclickable($(".review-previous"));
+        VisualStyles.Unclickable(el_ReviewPreviousButton);
       }else{
-        MakeClickable($(".review-previous"));
+        VisualStyles.Clickable(el_ReviewPreviousButton);
       }
 
       if(CurrentQuestion==TotalQuestions){
-        MakeUnclickable($(".review-next"));
+        VisualStyles.Unclickable(el_ReviewNextButton);
       }else{
-        MakeClickable($(".review-next"));
+        VisualStyles.Clickable(el_ReviewNextButton);
       }
 
     };
@@ -728,14 +837,14 @@ const resultsURL = getParameter("quizResultsURL");
 
       const TempQuestion = QuizQuestions[questionNumber - 1];
 
-      $("#question-number").text(CurrentQuestion + "/" + TotalQuestions);
+      el_CurrentQuestionNumber.text(CurrentQuestion + "/" + TotalQuestions);
   
-      $("#question p").text(TempQuestion.question);
+      el_QuestionParagraph.text(TempQuestion.question);
   
-      $("#answer1").text(TempQuestion.options[0]);
-      $("#answer2").text(TempQuestion.options[1]);
-      $("#answer3").text(TempQuestion.options[2]);
-      $("#answer4").text(TempQuestion.options[3]);
+      el_Answer1.text(TempQuestion.options[0]);
+      el_Answer2.text(TempQuestion.options[1]);
+      el_Answer3.text(TempQuestion.options[2]);
+      el_Answer4.text(TempQuestion.options[3]);
 
       ClearAllAnswers();
 
@@ -752,7 +861,7 @@ const resultsURL = getParameter("quizResultsURL");
       return tempURL;
     }
 
-    $('#clickfunnels-redirect').unbind('click').click(function(){
+    el_ClickFunnelsRedirect.unbind('click').click(function(){
       window.location.replace(buildResultsURL());
     });
 

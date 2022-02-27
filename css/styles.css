@@ -56,8 +56,11 @@ html {
   display: block;
   position: relative;
   box-sizing: border-box;
-  height: 30%;
+  /*height: 30%;*/
+  height: 100%;
   margin-top: 0px;
+  transition: 1000ms all ease-in-out;
+  overflow: hidden;
 }
 
 .main-content.extended{
@@ -95,7 +98,7 @@ header.min-header {
   position: relative;
   display: block;
   width: 100%;
-  height:30%;
+  height:100%;
   min-height: 245px;
   padding-top: 10px;
 }
@@ -279,6 +282,24 @@ margin-top: 180px;
   transform-origin: 50% 50%;
   opacity: 0;
 }
+
+
+
+/* Quiz Question Boxes and Area */
+
+.quiz-container{
+  z-index: 3;
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: 245px;
+  height: 100%;
+  background: url("../images/app-background.png");
+  background-size: cover;
+  transition: 400ms all;
+}
+
+
 
 .box {
   background: #ffffff;
@@ -724,7 +745,7 @@ display: flex;
 margin: 0 auto;
 width: 100%;
 height: 100%;
-margin-top: -10px;
+margin-top: -30px;
 position: absolute;
 text-align: center;
 justify-content: center;
@@ -818,6 +839,31 @@ color: white;
   width: 60px;
   display: block;
   background-repeat: no-repeat;
+}
+
+.submit-results-btn{
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 16px;
+  background: purple;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 0px;
+  width: 85%;
+  background-color: #B12FDB;
+  cursor: pointer;
+  transition: 150ms all;
+}
+
+.submit-results-btn:hover{
+  background-color: #7513D7;  
+}
+
+.submit-results-btn:active{
+  transform: scale(0.95);
+  box-shadow: 0px 5px 20px rgba(108, 43, 206, 0.4);
 }
 
 
@@ -1203,4 +1249,8 @@ font-size: 12px;
 
 .push-button{
   transform: scale(0.7);
+}
+
+.h-30{
+  height: 30%;
 }
