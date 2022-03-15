@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, user-scalable=yes">
-    <meta name=”apple-mobile-web-app-capable” content=”yes”>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, user-scalable=yes" />
+    <meta name="”apple-mobile-web-app-capable”" content="”yes”" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -16,168 +19,166 @@
     <script type="module" src="src/quiz-questions.js"></script>
     <script type="module" src="src/quiz.js"></script>
     <script src="src/header-particles.js"></script>
-    
   </head>
 
-  <div class="root">
+  <body>
+    <div class="root">
 
-    <div class="main-view" id="quiz-view">
-
-      <div class="review-controls invisible">
-        <button class="review-previous right faded" id=""><i class="fa-solid fa-angle-left"></i></button>
-        <button class="review-next left faded" id=""><i class="fa-solid fa-angle-right"></i></button>
-      </div>
-      <div class="main-content">
-
-        <div class="top-content">
-          <div id="quiz-complete-message" class="quiz-complete-message unclickable invisible"><p>Quiz Complete!</p></div>
-
-
-
-          <header class="min-header">
-            <button class="arrow-button"></button>
-      
-            <button class="navigation-button"></button>
-          </header>
-        <div id="particles-js"></div>
-
-
-          <div id='question-timer' class="timer small">
-            <div class="label">
-              <div class="seconds"></div>
-              <div class="unit">s</div>
-            </div>
-
-            <svg class="progress-ring" width="100" height="100">
-              <defs>
-                <linearGradient id="linear" x1="35%" y1="55%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#2BCEBD" />
-                  <stop offset="100%" stop-color="#22B0FB" />
-                </linearGradient>
-              </defs>
-
-              <circle
-                class="progress-ring__base"
-                stroke="white"
-                stroke-width="4"
-                fill="transparent"
-                r="35"
-                cx="50"
-                cy="50"
-              />
-              <circle
-                class="progress-ring__circle"
-                stroke="url(#linear)"
-                stroke-width="4"
-                fill="transparent"
-                r="35"
-                cx="50"
-                cy="50"
-              />
-            </svg>
-          </div>
+      <div class="main-view" id="quiz-view">
+        <div class="review-controls invisible">
+          <button class="review-previous right faded" id="">
+            <i class="fa-solid fa-angle-left"></i>
+          </button>
+          <button class="review-next left faded" id="">
+            <i class="fa-solid fa-angle-right"></i>
+          </button>
         </div>
-
-        <!-- QUESTION AREA -->
-        
-
-        <div class="quiz-container">
-
-          <div class="box large invisible" id="question-area"> 
-            <div class="header">
-              <div class="title">Question</div>
-              <div id="question-number" class="title question text-purple"></div>
-              <div id="incorrect-answers" class="result incorrect"></div>
-              <div id="correct-answers" class="result correct"></div>
+        <div class="main-content">
+          <div class="top-content">
+            <div
+              id="quiz-complete-message"
+              class="quiz-complete-message unclickable invisible"
+            >
+              <p>Quiz Complete!</p>
             </div>
-            <div id="question" class="content">
-              <p>
 
-              </p>
+            <header class="min-header">
+              <button class="arrow-button"></button>
+
+              <button class="navigation-button"></button>
+            </header>
+            <div id="particles-js"></div>
+
+            <div id="question-timer" class="timer small">
+              <div class="label">
+                <div class="seconds"></div>
+                <div class="unit">s</div>
+              </div>
+
+              <svg class="progress-ring" width="100" height="100">
+                <defs>
+                  <linearGradient
+                    id="linear"
+                    x1="35%"
+                    y1="55%"
+                    x2="100%"
+                    y2="0%"
+                  >
+                    <stop offset="0%" stop-color="#2BCEBD" />
+                    <stop offset="100%" stop-color="#22B0FB" />
+                  </linearGradient>
+                </defs>
+
+                <circle
+                  class="progress-ring__base"
+                  stroke="white"
+                  stroke-width="4"
+                  fill="transparent"
+                  r="35"
+                  cx="50"
+                  cy="50"
+                />
+                <circle
+                  class="progress-ring__circle"
+                  stroke="url(#linear)"
+                  stroke-width="4"
+                  fill="transparent"
+                  r="35"
+                  cx="50"
+                  cy="50"
+                />
+              </svg>
             </div>
-            <div class="scrolling-overlay"></div>
-          
           </div>
 
-          <div class="answers invisible">
-            <a id="answer1" class="option"></a>
+          <!-- QUESTION AREA -->
+
+          <div class="quiz-container">
+            <div class="box large invisible" id="question-area">
+              <div class="header">
+                <div class="title">Question</div>
+                <div
+                  id="question-number"
+                  class="title question text-purple"
+                ></div>
+                <div id="incorrect-answers" class="result incorrect"></div>
+                <div id="correct-answers" class="result correct"></div>
+              </div>
+              <div id="question" class="content">
+                <p></p>
+              </div>
+              <div class="scrolling-overlay"></div>
+            </div>
+
+            <div id="answers" class="answers invisible">
+              <!--    <a id="answer1" class="option"></a>
             <a id="answer2" class="option"></a>
             <a id="answer3" class="option"></a>
-            <a id="answer4" class="option"></a>
-          </div>
-
-        </div>
-
-      </div>
-
-
-
-    </div>
-
-
-
-    <div class="main-view" id="review-view">
-      <div class="main-content">
-        <div class="top-content h-30">
-          <header class="min-header">
-            <button class="arrow-button"></button>
-      
-            <button class="navigation-button"></button>
-          </header>
-          <div class="misc-circle-container">
-          <div class="misc-circle"></div>
-          </div>
-  
-          <div class="points-container">
-            <div class="points-text" id="results-points">0</div>
-            <div class="points-text-label">PTS</div>
-          </div>
-  
-          <div class="answers-summary">
-            <div class="icon-row">
-  
-              <div class="icon-column percentage">
-                <div class="icon"></div>   
-                <div class="icon-border"></div>
-                <div class="number" id="results-percentage">-</div>
-                <div class="label">Completion</div>
-              </div>
-  
-              <div class="icon-column correct">
-                <div class="icon"></div>   
-                <div class="icon-border"></div>
-                <div class="number" id="results-correct">-</div>
-                <div class="label">Correct</div>
-              </div>
-  
-              <div class="icon-column wrong">
-                <div class="icon"></div>   
-                <div class="icon-border"></div>
-                <div class="number" id="results-incorrect">-</div>
-                <div class="label">Wrong</div>
-              </div>
-  
+            <a id="answer4" class="option"></a>-->
             </div>
           </div>
-  
-  
-          <div class="summary-buttons" id="summary-buttons">
-  
-            <div class="button-group">
-            <button class="replay" id="replay-quiz">
-              <i></i>
-            </button>
-            <div class="label">Replay Quiz</div>     
-          </div>
-  
-          <div class="button-group">
-            <button class="review" id="review-answers">
-              <i></i>
-            </button>
-            <div class="label" id="review-label">Review Answers</div>  
-          </div>
-  
-          <!--<div class="button-group">
+        </div>
+      </div>
+
+      <div class="main-view" id="review-view">
+        <div class="main-content">
+          <div class="top-content h-30">
+            <header class="min-header">
+              <button class="arrow-button"></button>
+
+              <button class="navigation-button"></button>
+            </header>
+            <div class="misc-circle-container">
+              <div class="misc-circle"></div>
+            </div>
+
+            <div class="points-container">
+              <div class="personal-best-container invisible" style="text-align: center; margin-top: -55px;margin-bottom: 30px; color: #e1c6ee; font-weight: 400">Personal Best: <span id="personal-best" style="color: #fff; margin-left: 3px;">-</span> <span style="font-size: 12px">PTS</span></div>
+              <div class="points-text" id="results-points">0</div>
+              <div class="points-text-label">PTS</div>
+            </div>
+
+            <div class="answers-summary">
+              <div class="icon-row">
+                <div class="icon-column percentage">
+                  <div class="icon"></div>
+                  <div class="icon-border"></div>
+                  <div class="number" id="results-percentage">-</div>
+                  <div class="label">Completion</div>
+                </div>
+
+                <div class="icon-column correct">
+                  <div class="icon"></div>
+                  <div class="icon-border"></div>
+                  <div class="number" id="results-correct">-</div>
+                  <div class="label">Correct</div>
+                </div>
+
+                <div class="icon-column wrong">
+                  <div class="icon"></div>
+                  <div class="icon-border"></div>
+                  <div class="number" id="results-incorrect">-</div>
+                  <div class="label">Wrong</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="summary-buttons" id="summary-buttons">
+              <div class="button-group">
+                <button class="replay" id="replay-quiz">
+                  <i></i>
+                </button>
+                <div class="label">Replay Quiz</div>
+              </div>
+
+              <div class="button-group">
+                <button class="review" id="review-answers">
+                  <i></i>
+                </button>
+                <div class="label" id="review-label">Review Answers</div>
+              </div>
+
+              <!--<div class="button-group">
             <button class="leaderboard">
               <i></i>
             </button>
@@ -190,207 +191,83 @@
             </button>
             <div class="label">Home</div>  
           </div>-->
-  
-          <button id="clickfunnels-redirect" class="submit-results-btn unclickable">Submit Results</button>
 
+              <button
+                id="clickfunnels-redirect"
+                class="submit-results-btn unclickable"
+              >
+                Submit Results
+              </button>
+            </div>
 
+            <div id="particles-js2"></div>
           </div>
-  
-  
-  
-        <div id="particles-js2"></div> 
-    </div>
-
-
-
-
-    
-
-    
-
-
-
-
-
-  
-  </div>
-
-
-
-
-  </div>
-
-  <!-- LEADERBOARD -->
-  <!--
-  <div class="main-view">
-    <div class="main-content extended">
-      <div class="top-content">
-        <header class="min-header">
-          <button class="arrow-button"></button>
-    
-          <button class="navigation-button"></button>
-        </header>
-      
-  
-  
-  
-  
-  
-        <div class="misc-circle-container">
-          <div class="misc-circle"></div>
-        </div>
-  
-        <div class="leaderboard-chart">
-  
-          <div class="winner-two">
-  
-            <div class="winner-user">
-              <div class="thumbnail"></div>
-              <div class="label">Larry</div>
-            </div>
-  
-            <div class="bar">
-              <div class="placing">2</div>
-              <div class="points">1,583<br>PTS</div>
-            </div>
-  
-          </div>
-  
-          <div class="winner-one">
-  
-            <div class="winner-user">
-              <div class="thumbnail"></div>
-              <div class="label">John</div>
-            </div>
-  
-            <div class="bar">
-              <div class="placing">1</div>
-              <div class="points">1,906<br>PTS</div>
-            </div>
-  
-          </div>
-  
-          <div class="winner-three">
-  
-            <div class="winner-user">
-              <div class="thumbnail"></div>
-              <div class="label">Alex</div>
-            </div>
-  
-            <div class="bar">
-              <div class="placing">3</div>
-              <div class="points">1,245<br>PTS</div>
-            </div>
-  
-          </div>
-  
-        </div>
-        
-        
-      </div>
-  
-  
-      <div class="leaderboard-list">
-        <div class="row self">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">You</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
-        </div>
-        <div class="row">
-          <div class="placing">01</div>
-          <div class="thumbnail"></div>
-          <div class="name">Alex</div>
-          <div class="points">1,042 <span class="pts">PTS</span></div>
         </div>
       </div>
-  
-  
-      <div id="particles-js3"></div> 
-  
+
+      <!-- LEADERBOARD -->
+
+      <div class="main-view">
+        <div class="main-content extended">
+          <div class="top-content">
+            <header class="min-header">
+              <button class="arrow-button"></button>
+
+              <button class="navigation-button"></button>
+            </header>
+
+            <div class="misc-circle-container">
+              <div class="misc-circle"></div>
+            </div>
+
+            <div id="leaderboard-chart" class="leaderboard-chart invisible">
+              <div class="winner-two">
+                <div class="winner-user">
+                  <div id="top-2-profile" class="thumbnail"><i class="fa-solid fa-circle-user"></i></div>
+                  <div id="top-2-username" class="label"></div>
+                </div>
+
+                <div class="bar">
+                  <div class="placing">2</div>
+                  <div class="points"><span id="top-2-points"></span><br />PTS</div>
+                </div>
+              </div>
+
+              <div class="winner-one">
+                <div class="winner-user">
+                  <div id="top-1-profile" class="thumbnail"><i class="fa-solid fa-circle-user"></i></div>
+                  <div id="top-1-username" class="label"></div>
+                </div>
+
+                <div class="bar">
+                  <div class="placing">1</div>
+                  <div class="points"><span id="top-1-points"></span><br />PTS</div>
+                </div>
+              </div>
+
+              <div class="winner-three">
+                <div class="winner-user">
+                  <div id="top-3-profile" class="thumbnail"><i class="fa-solid fa-circle-user"></i></div>
+                  <div id="top-3-username" class="label"></div>
+                </div>
+
+                <div class="bar">
+                  <div class="placing">3</div>
+                  <div class="points"><span id="top-3-points"></span><br />PTS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="particles-js3"></div>
+        </div>
+
+        <div id="leaderboard-list" class="leaderboard-list"></div>
+      </div>
     </div>
-  
-  </div>
-  -->
 
-</div>
+    <!-- FIREBASE -->
 
+    <script type="module" src="src/leaderboard.js"></script>
+  </body>
 </html>

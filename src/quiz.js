@@ -2,49 +2,51 @@ import getParameter from "./user.js";
 
 import quizQuestions from "./quiz-questions.js";
 
+import {SubmitScoreDB} from "./leaderboard.js";
+
 
 // Visual Styles and Animation Functions
 
 const VisualStyles = {
 
   Clickable:
-  function(element){element.removeClass("unclickable faded");},
+  function(element){element.classList.remove("unclickable","faded");},
   Unclickable: 
-  function(element){element.addClass("unclickable faded");},
+  function(element){element.classList.add("unclickable","faded");},
 
   Visible:
-  function(element){element.removeClass("invisible");},
+  function(element){element.classList.remove("invisible");},
   Invisible:
-  function(element){element.addClass("invisible");},
+  function(element){element.classList.add("invisible");},
 
   Active:
-  function(element){element.addClass("active");},
+  function(element){element.classList.add("active");},
   Inactive:
-  function(element){element.removeClass("active");},
+  function(element){element.classList.remove("active");},
 
   Uninteractable:
-  function(element){element.addClass("unclickable");},
+  function(element){element.classList.add("unclickable");},
 
   FullHeight:
-  function(element){element.addClass("full-height");},
+  function(element){element.classList.add("full-height");},
 
   RegularHeight:
-  function(element){element.removeClass("full-height");},  
+  function(element){element.classList.remove("full-height");},  
 
   Answers: {
     Clicked:
-    function(element){element.addClass("clicked");},
+    function(element){element.classList.add("clicked");},
     Correct:
-    function(element){element.addClass("correct");},
+    function(element){element.classList.add("correct");},
     Incorrect:
-    function(element){element.addClass("incorrect");},
+    function(element){element.classList.add("incorrect");},
     CorrectFix:
-    function(element){element.addClass("correctfix");},
+    function(element){element.classList.add("correctfix");},
 
     Unselect:
-    function(element){element.removeClass("clicked");},
+    function(element){element.classList.remove("clicked");},
     Clear:
-    function(element){element.removeClass("clicked correct incorrect correctfix");},
+    function(element){element.classList.remove("clicked","correct","incorrect");},
 
 
   }
@@ -53,22 +55,24 @@ const VisualStyles = {
 
 function PressButtonAnimation(element){
 
-  element.addClass('add-transition');
-  element.addClass('push-button');
+  element.classList.add('add-transition');
+  element.classList.add('push-button');
   setTimeout(function(){
-    element.removeClass('push-button');
+    element.classList.remove('push-button');
   },150);
   setTimeout(function(){
-    element.removeClass('add-transition');
+    element.classList.remove('add-transition');
   },300);
 
 }
 
-function fadeInOutUpdate(element,text,delay){
+const fadeInOutUpdate = function fadeInOutUpdate(element,text,delay){
   VisualStyles.Invisible(element);
   
   setTimeout(function(){
-    element.text(text);
+    if(text!='')
+    element.textContent = text;
+
     VisualStyles.Visible(element);
   }
   ,delay);
@@ -80,10 +84,15 @@ function fadeInOutUpdate(element,text,delay){
 // Quiz Logic
 
 
-$(document).ready(function () {
+
+
 
 const username = getParameter("username");
 const resultsURL = getParameter("quizResultsURL");
+
+
+// Add Answer Component
+
 
 
   /*--------------------------------
@@ -92,64 +101,66 @@ const resultsURL = getParameter("quizResultsURL");
 
   // Quiz Particle Header
 
-  let el_QuizContainer = $('#quiz-view .main-content .quiz-container');
+  let el_QuizContainer = document.querySelector('#quiz-view .main-content .quiz-container');
 
   // Quiz Review Controls
 
-  let el_ReviewControls = $(".review-controls");
+  let el_ReviewControls = document.querySelector(".review-controls");
 
-  let el_ReviewNextButton = $(".review-next");
-  let el_ReviewPreviousButton = $(".review-previous");
+  let el_ReviewNextButton = document.querySelector(".review-next");
+  let el_ReviewPreviousButton = document.querySelector(".review-previous");
 
   // Quiz Timer
 
-  let el_QuestionTimer = $("#question-timer");
+  let el_QuestionTimer = document.querySelector("#question-timer");
   let el_TimerCircle = document.querySelector(".progress-ring__circle");
   let el_TimerCircleFill = document.querySelector(".progress-ring");
-  let el_QuestionSeconds = $(".seconds");
+  let el_QuestionSeconds = document.querySelector(".seconds");
 
   // Quiz Question Box
 
-  let el_CurrentCorrectAnswers = $("#correct-answers");
-  let el_CurrentIncorrectAnswers = $("#incorrect-answers");
-  let el_CurrentQuestionNumber = $("#question-number");
+  let el_CurrentCorrectAnswers = document.querySelector("#correct-answers");
+  let el_CurrentIncorrectAnswers = document.querySelector("#incorrect-answers");
+  let el_CurrentQuestionNumber = document.querySelector("#question-number");
 
-  let el_QuestionArea = $('.box');
+  let el_QuestionArea = document.querySelector('.box');
 
-  let el_QuestionParagraph = $('#question p');
-  let el_QuestionParagraphWrapper = $('#question');
+  let el_QuestionParagraph = document.querySelector('#question p');
+  let el_QuestionParagraphWrapper = document.querySelector('#question');
 
-  let el_QuestionBottomOverlay = $(".scrolling-overlay");
+  let el_QuestionBottomOverlay = document.querySelector(".scrolling-overlay");
 
   // Answers
 
-  let el_AnswerGroup = $('.answers');
+  let el_AnswerGroup = document.querySelector('.answers');
 
-  let el_Answer1 = $('#answer1');
-  let el_Answer2 = $('#answer2');  
-  let el_Answer3 = $('#answer3');
-  let el_Answer4 = $('#answer4');
+  let el_Answer = [];
+
+  let el_Answer1 = document.querySelector('#answer1');
+  let el_Answer2 = document.querySelector('#answer2');  
+  let el_Answer3 = document.querySelector('#answer3');
+  let el_Answer4 = document.querySelector('#answer4');
 
   // Quiz Complete Message
 
-  let el_QuizCompleteMessage = $('#quiz-complete-message');
+  let el_QuizCompleteMessage = document.querySelector('#quiz-complete-message');
 
 
   // Quiz Results Page
 
-  let el_SummaryButtons = $("#summary-buttons");
+  let el_SummaryButtons = document.querySelector("#summary-buttons");
 
-  let el_ReviewAnswersButton = $('#review-answers');
-  let el_ReviewAnswersButtonLabel = $('#review-label')
+  let el_ReviewAnswersButton = document.querySelector('#review-answers');
+  let el_ReviewAnswersButtonLabel = document.querySelector('#review-label')
 
-  let el_ResultsPointsText = $('#results-points');
-  let el_ResultsPercentageText = $('#results-percentage');
-  let el_ResultsCorrectText = $('#results-correct');
-  let el_ResultsIncorrectText = $('#results-incorrect');
+  let el_ResultsPointsText = document.querySelector('#results-points');
+  let el_ResultsPercentageText = document.querySelector('#results-percentage');
+  let el_ResultsCorrectText = document.querySelector('#results-correct');
+  let el_ResultsIncorrectText = document.querySelector('#results-incorrect');
 
-  let el_ReplayQuizButton = $('#replay-quiz');
+  let el_ReplayQuizButton = document.querySelector('#replay-quiz');
 
-  let el_ClickFunnelsRedirect = $('#clickfunnels-redirect');
+  let el_ClickFunnelsRedirect = document.querySelector('#clickfunnels-redirect');
 
 
   
@@ -172,6 +183,10 @@ const resultsURL = getParameter("quizResultsURL");
 
   let CurrentQuestion = 0;
 
+  let result = '';
+
+
+
   let CorrectAnswers = 0;
 
   let IncorrectAnswers = 0;
@@ -180,19 +195,22 @@ const resultsURL = getParameter("quizResultsURL");
 
   let StartedSelectionTimer = false;
 
-  let QuizAnwsers = [];
-  let QuizAnwsersElement = [];
+  let QuizAnswers = [];
+  let QuizAnswersElement = [];
 
   let UserAnswers = [];
   let UserAnswersElement = [];
 
   let PointsResults = 0;
 
+  let QuestionTimeLeft;
+
   let EnlargedQuestion = false;
 
   let initialQuestionHeight;
 
   let canClickQuestion = true;
+
 
 
   // Timer Logic
@@ -205,7 +223,7 @@ const resultsURL = getParameter("quizResultsURL");
   el_TimerCircle.style.strokeDashoffset = `${circumference}`;
 
   let QuestionCounter = QuestionTimer;
-  el_QuestionSeconds.text(QuestionCounter);
+  el_QuestionSeconds.textContent = ""+QuestionCounter;
 
 
   function setProgress(percent) {
@@ -215,7 +233,10 @@ const resultsURL = getParameter("quizResultsURL");
 
   function StartQuestionTimer() {
 
+    QuestionTimeLeft = QuestionTimer;
+
     setProgress(0);
+
     QuestionTimerElement = setInterval(function () {
       el_TimerCircle.style.transition = QuestionTimer + "s linear stroke-dashoffset";
       el_QuestionSeconds.textContent = "" + QuestionCounter;
@@ -223,15 +244,17 @@ const resultsURL = getParameter("quizResultsURL");
       console.log(QuestionCounter);
 
       if (QuestionCounter > 0) {
-        el_QuestionSeconds.text(QuestionCounter);
+        el_QuestionSeconds.textContent = ""+QuestionCounter;
         QuestionCounter -= 1;
+        QuestionTimeLeft -= 1;
 
       } else {
         // If counter gets to 0, incorrect answer and move to next question
-        el_QuestionSeconds.text(QuestionCounter);
+        el_QuestionSeconds.textContent = ""+QuestionCounter;
         QuestionCounter = 0;
         StopQuestionTimer();
-        if (!DisplayingIncorrectAnswer) AnimateTimeOutAnswer();
+        if (!DisplayingIncorrectAnswer)
+        AnimateTimeOutAnswer();
       }
 
       el_TimerCircle.style.opacity = "1";
@@ -283,11 +306,11 @@ const resultsURL = getParameter("quizResultsURL");
 
     // Reset the quiz variables values
 
-    QuizAnwsers = [];
-    QuizAnwsersElement = [];
+    QuizAnswers = [];
+    QuizAnswersElement = [];
 
     UserAnswers = [];
-    QuizAnwsersElement = [];
+    QuizAnswersElement = [];
 
     TotalQuestions = quizQuestions.AIFluencyQuiz.length;
     CurrentQuestion = 1;
@@ -300,11 +323,15 @@ const resultsURL = getParameter("quizResultsURL");
 
     StartedSelectionTimer = false;
 
+
+    PointsResults = 0;
+    fadeInOutUpdate(el_ResultsPointsText,PointsResults,500);
+
     // Initialize Quiz
 
     UpdateQuiz();
-    AwaitAnswers(CurrentQuestion);
-    StartQuestionTimer();
+    AwaitAnswers(CurrentQuestion-1);
+    //StartQuestionTimer();
 
     QuizActive = true;
 
@@ -328,35 +355,61 @@ const resultsURL = getParameter("quizResultsURL");
 
 
   function LoadNewQuestion(questionNumber) {
-    const TempQuestion = QuizQuestions[questionNumber - 1];
+    const TempQuestion = QuizQuestions[questionNumber];
 
-    const TempAnswer = QuizQuestions[questionNumber - 1].answer;
+    el_QuestionParagraph.textContent=TempQuestion.question;
 
-    el_QuestionParagraph.text(TempQuestion.question);
+    Create_el_Answer(questionNumber);
 
-    el_Answer1.text(TempQuestion.options[0]);
-    el_Answer2.text(TempQuestion.options[1]);
-    el_Answer3.text(TempQuestion.options[2]);
-    el_Answer4.text(TempQuestion.options[3]);
-
-    // Get Current Correct Answer
-
-    if (el_Answer1.text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = el_Answer1;
-    }
-    if (el_Answer2.text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = el_Answer2;
-    }
-    if (el_Answer3.text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = el_Answer3;
-    }
-    if (el_Answer4.text() == TempAnswer) {
-      QuizAnwsersElement[CurrentQuestion-1] = el_Answer4;
-    }
-
-    QuizAnwsers[CurrentQuestion-1] = QuizAnwsersElement[CurrentQuestion-1].text();
 
   }
+
+function Create_el_Answer(questionNumber){
+
+
+  // clear answer section
+  document.getElementById('answers').innerHTML = "";
+
+  // check the answer quantity for the current question
+  let AnswerQuantity = QuizQuestions[questionNumber].options.length;
+
+
+  // clear the answer element
+  el_Answer = [];
+  
+  // get the current answer
+  let CurrentCorrectAnswer = QuizQuestions[questionNumber].answer;
+
+  // Create answer elements based on the current possible answers, and add the text from the current quiz answers
+  for(var i=0;i<AnswerQuantity;i++){
+    
+
+      document.getElementById('answers').innerHTML += `
+        <a id="answer" class="option">`+QuizQuestions[questionNumber].options[i]+`</a>
+      `;
+            
+
+
+    }
+
+    el_Answer = document.querySelectorAll('#answer');
+
+    for(var x=0;x<el_Answer.length;x++){
+      //Check if the loaded answer is the current answer. If it is, make the answer element the correct element
+      if (QuizQuestions[questionNumber].options[x]==CurrentCorrectAnswer){
+      QuizAnswersElement[questionNumber] = el_Answer[x];
+      //alert("Correct answer is element index "+x)
+      }
+    }
+
+                    // Check if the loaded answer is the current answer. If it is, make the answer element the correct element
+                /*    if (QuizQuestions[questionNumber].options[i]==CurrentCorrectAnswer){
+                      QuizAnswersElement[questionNumber] = el_Answer[i];
+                    }*/
+    
+}
+
+
 
   // Select answer: this will select a new answer or change the previously selected answer
 
@@ -366,16 +419,16 @@ const resultsURL = getParameter("quizResultsURL");
     VisualStyles.Invisible(el_QuestionTimer);
 
     // Unselect all the answers in case the user is re-selecting an answer
-    VisualStyles.Answers.Unselect(el_Answer1);
+   /* VisualStyles.Answers.Unselect(el_Answer1);
     VisualStyles.Answers.Unselect(el_Answer2);
     VisualStyles.Answers.Unselect(el_Answer3);
-    VisualStyles.Answers.Unselect(el_Answer4);
+    VisualStyles.Answers.Unselect(el_Answer4);*/
 
     // Style the currently selected answer
     VisualStyles.Answers.Clicked(element);
 
     UserAnswersElement[CurrentQuestion-1] = element;
-    UserAnswers[CurrentQuestion-1] = UserAnswersElement[CurrentQuestion-1].text();
+    UserAnswers[CurrentQuestion-1] = UserAnswersElement[CurrentQuestion-1].textContent;
   }
 
 
@@ -387,14 +440,14 @@ const resultsURL = getParameter("quizResultsURL");
   function EnableNewQuestion() {
     CanChangeAnswer = true;
     StartedSelectionTimer = false;
-    StartQuestionTimer();
+    //StartQuestionTimer();
   }
 
-  function StartToleranceTimer() {
+  function StartToleranceTimer(element) {
     StartedSelectionTimer = true;
     setTimeout(function () {
       CanChangeAnswer = false;
-      let result = CheckCorrectAnswer();
+      let result = CheckCorrectAnswer(element.textContent);
       AnimateAnswerResult(UserAnswersElement[CurrentQuestion-1], result, 2000);
       FadeQuizAnimation();
     }, 2000);
@@ -404,12 +457,33 @@ const resultsURL = getParameter("quizResultsURL");
   // Await answer selection function. This will check for the clicks, start the timer in the first click, and enable to switch the answer if within the timer limit.
 
   function AwaitAnswers(questionNumber) {
-    TriggerAnswer(el_Answer1);
-    TriggerAnswer(el_Answer2);
-    TriggerAnswer(el_Answer3);
-    TriggerAnswer(el_Answer4);
+
+    let AnswerQuantity = QuizQuestions[questionNumber].options.length;
+
+    for(let i=0;i<AnswerQuantity;i++){
+      el_Answer[i].onclick =  function(){
+        TriggerAnswer(el_Answer[i]);
+
+        CheckCorrectAnswer(el_Answer[i].textContent);
+        };
+
+    }
+
   }
 
+  function TriggerAnswer(element){
+      if (!DisplayingIncorrectAnswer) {
+        if (!StartedSelectionTimer) {
+          StopQuestionTimer();
+          // Start the second timer to give some leeway to the user to change the answer
+          StartToleranceTimer(element);
+        }
+        if (CanChangeAnswer) {
+          SelectedAnswer(element);
+        }
+      }
+  }
+/*
   function TriggerAnswer(element){
     element.unbind("click").click(function () {
       if (!DisplayingIncorrectAnswer) {
@@ -423,11 +497,27 @@ const resultsURL = getParameter("quizResultsURL");
         }
       }
     });
-  }
+  }*/
+
 
   function CorrectAnswer() {
     if(QuizActive)
     CorrectAnswers++;
+
+    // If the answer is correct, it will award 100 points + a bonus between 1 and 100 depending on the amount left (it's a % value that adjusts to the initial timer settings)
+
+    PointsResults += 100+Math.round((QuestionTimeLeft/QuestionTimer)*100);
+/*
+    VisualStyles.Invisible(el_ResultsPointsText);
+
+    setTimeout(function(){
+      el_ResultsPointsText.textContent = PointsResults;;
+      VisualStyles.Visible(el_ResultsPointsText);
+    },500);
+*/
+
+    fadeInOutUpdate(el_ResultsPointsText,PointsResults,500);
+
   }
 
   function IncorrectAnswer() {
@@ -442,41 +532,92 @@ const resultsURL = getParameter("quizResultsURL");
 
       ClearAllAnswers();
 
-      el_CurrentCorrectAnswers.text(CorrectAnswers);
-      el_CurrentIncorrectAnswers.text(IncorrectAnswers);
-      el_CurrentQuestionNumber.text(CurrentQuestion + "/" + TotalQuestions);
+      el_CurrentCorrectAnswers.textContent=CorrectAnswers;
+      el_CurrentIncorrectAnswers.textContent=IncorrectAnswers;
+      el_CurrentQuestionNumber.textContent=CurrentQuestion + "/" + TotalQuestions;
 
       DisplayingIncorrectAnswer = false;
 
-      LoadNewQuestion(CurrentQuestion);
+      LoadNewQuestion(CurrentQuestion-1);
 
-      QuestionCounter = QuestionTimer;
-      el_TimerCircle.style.transition = "0s linear stroke-dashoffset";
-      setProgress(0);
+      ResetQuestionHeight();
 
-      AwaitAnswers(CurrentQuestion);
+        // Reset the timer to update the remaining time to the original settings
+        setTimeout(function(){el_QuestionSeconds.textContent= ''+QuestionTimer},300);
 
-      VisualStyles.Clickable(el_QuestionArea);
-      VisualStyles.Clickable(el_AnswerGroup);
 
-      // Reset the timer to update the remaining time to the original settings
-      el_QuestionSeconds.text(QuestionTimer);
+      setTimeout(function(){
+
+        QuestionCounter = QuestionTimer;
+        el_TimerCircle.style.transition = "0s linear stroke-dashoffset";
+        setProgress(0);
+
+        StartQuestionTimer();
+  
+        AwaitAnswers(CurrentQuestion-1);
+  
+        VisualStyles.Clickable(el_QuestionArea);
+        VisualStyles.Clickable(el_AnswerGroup);
+  
+
+
+        VisualStyles.Visible(el_QuestionArea);
+        VisualStyles.Visible(el_AnswerGroup);
+        VisualStyles.Visible(el_QuestionTimer);
+
+
+      },500);
 
   }
 
 
+  function ResetQuestionHeight(){
+            //Display Original Question Size
+            canClickQuestion = true;
+            VisualStyles.Visible(el_QuestionBottomOverlay);
+
+            initialQuestionHeight = document.querySelector(".header").offsetHeight+el_QuestionParagraphWrapper.offsetHeight;
+            let tempHeight = el_QuestionParagraph.offsetHeight+document.querySelector(".header").offsetHeight+35;
+            el_QuestionArea.style.height = tempHeight+'px';
+
+            // Get Line Amount
+            let tempBox = document.querySelector('#question').firstElementChild;
+            //alert(tempBox.offsetHeight/22);
+
+            let lineAmount = tempBox.offsetHeight/22;
+
+            if(lineAmount<=5){
+              canClickQuestion = false;
+              VisualStyles.Invisible(el_QuestionBottomOverlay);  
+            }
+  }
+
     // Check if the selected answer is the same as the correct answer for the round and return the result as 'correct' or 'incorrect'
 
-    function CheckCorrectAnswer() {
+   /* function CheckCorrectAnswer() {
       let result;
   
-      if (QuizAnwsers[CurrentQuestion-1] == UserAnswers[CurrentQuestion-1]) {
+      if (QuizAnswers[CurrentQuestion-1] == UserAnswers[CurrentQuestion-1]) {
         result = "correct";
       } else {
         result = "incorrect";
       }
   
       return result;
+    }*/
+
+
+    function CheckCorrectAnswer(selectedAnswerText) {
+      let result;
+  
+      if (QuizQuestions[CurrentQuestion-1].answer == selectedAnswerText) {
+        result = "correct";
+      } else {
+        result = "incorrect";
+      }
+
+      return result;
+
     }
 
   // Animate correct, incorrect answers, fade the timer and update the questions and answers
@@ -487,10 +628,6 @@ const resultsURL = getParameter("quizResultsURL");
     if(EnlargedQuestion){
     shortenQuestion();    
     }
-    // We also make the answers and question unclickable
-    //VisualStyles.Uninteractable(el_QuestionArea);
-    //VisualStyles.Uninteractable(el_AnswerGroup);
-
 
     // Check if answer was correct or incorrect
     if (result == "correct") {
@@ -502,10 +639,10 @@ const resultsURL = getParameter("quizResultsURL");
         VisualStyles.Answers.Unselect(selectedAnswer);
         VisualStyles.Answers.Incorrect(selectedAnswer);
 
-        VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
+        VisualStyles.Answers.CorrectFix(QuizAnswersElement[CurrentQuestion-1]);
         IncorrectAnswer();
       }else{
-        VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
+        VisualStyles.Answers.CorrectFix(QuizAnswersElement[CurrentQuestion-1]);
         IncorrectAnswer();
       }
     }
@@ -515,11 +652,11 @@ const resultsURL = getParameter("quizResultsURL");
   // Quick Fade Transition to Update Quiz
   
   function ClearAllAnswers(){
-    VisualStyles.Answers.Clear(el_Answer1);
+   /* VisualStyles.Answers.Clear(el_Answer1);
     VisualStyles.Answers.Clear(el_Answer2);
     VisualStyles.Answers.Clear(el_Answer3);
-    VisualStyles.Answers.Clear(el_Answer4);
-    el_QuestionSeconds.text(QuestionTimer);
+    VisualStyles.Answers.Clear(el_Answer4);*/
+    //el_QuestionSeconds.textContent= ""+QuestionTimer;
   }
 
 
@@ -558,11 +695,11 @@ const resultsURL = getParameter("quizResultsURL");
       CurrentQuestion++;
       if (CurrentQuestion <= TotalQuestions) {
         UpdateQuiz();
-        el_QuestionSeconds.textContent = "" + QuestionCounter;
+      /*  el_QuestionSeconds.textContent = "" + QuestionCounter;
 
         VisualStyles.Visible(el_QuestionArea);
         VisualStyles.Visible(el_AnswerGroup);
-        VisualStyles.Visible(el_QuestionTimer);
+        VisualStyles.Visible(el_QuestionTimer);*/
 
         EnableNewQuestion();
       }else{
@@ -587,7 +724,7 @@ const resultsURL = getParameter("quizResultsURL");
     IncorrectAnswer();
     el_TimerCircleFill.classList.add("timeout");
     setTimeout(function () {
-      VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
+      VisualStyles.Answers.CorrectFix(QuizAnswersElement[CurrentQuestion-1]);
     }, 1000);
 
     setTimeout(function () {
@@ -595,20 +732,20 @@ const resultsURL = getParameter("quizResultsURL");
       VisualStyles.Invisible(el_QuestionArea);
       VisualStyles.Invisible(el_AnswerGroup);
       VisualStyles.Invisible(el_QuestionTimer);
-      VisualStyles.Answers.CorrectFix(QuizAnwsersElement[CurrentQuestion-1]);
+      VisualStyles.Answers.CorrectFix(QuizAnswersElement[CurrentQuestion-1]);
 
-      //QuizAnwsersElement[CurrentQuestion-1].removeClass("correctfix");
+      //QuizAnswersElement[CurrentQuestion-1].classList.remove("correctfix");
     }, 3000);
     setTimeout(function () {
       el_TimerCircleFill.classList.remove("timeout");
       CurrentQuestion++;
       if (CurrentQuestion <= TotalQuestions) {
         UpdateQuiz();
-        el_QuestionSeconds.textContent = "" + QuestionCounter;
+      /*  el_QuestionSeconds.textContent = "" + QuestionCounter;
 
         VisualStyles.Visible(el_QuestionArea);
         VisualStyles.Visible(el_AnswerGroup);
-        VisualStyles.Visible(el_QuestionTimer);
+        VisualStyles.Visible(el_QuestionTimer);*/
 
         EnableNewQuestion();
       }else{
@@ -621,9 +758,7 @@ const resultsURL = getParameter("quizResultsURL");
   /* Enlarge Question Area */
 
 
-  el_QuestionArea
-    .unbind("click")
-    .click(function () {
+  el_QuestionArea.onclick = function () {
       if(!StartedSelectionTimer||ReviewingQuiz){
 
         if (!EnlargedQuestion&&canClickQuestion) {
@@ -635,18 +770,22 @@ const resultsURL = getParameter("quizResultsURL");
         }
 
       }
-    });
+    };
 
     function enlargeQuestion(){
 
+
       canClickQuestion = false;
 
-      initialQuestionHeight = $(".header").outerHeight(true)+el_QuestionParagraphWrapper.outerHeight(true);
+      initialQuestionHeight = document.querySelector(".header").offsetHeight+el_QuestionParagraphWrapper.offsetHeight;
+      let tempHeight = el_QuestionParagraph.offsetHeight+document.querySelector(".header").offsetHeight+35;
 
-      let tempHeight = el_QuestionParagraph.outerHeight(true)+$(".header").outerHeight(true)+15;
-      el_QuestionArea.height(''+tempHeight);
 
-      el_QuestionParagraphWrapper.addClass("full-height");
+      el_QuestionArea.style.height=tempHeight+'px';
+
+      el_QuestionArea.style.maxHeight = tempHeight+'px';
+
+      el_QuestionParagraphWrapper.classList.add("full-height");
       
       
       VisualStyles.Invisible(el_AnswerGroup);
@@ -664,11 +803,12 @@ const resultsURL = getParameter("quizResultsURL");
 
       canClickQuestion = false;
 
-      el_QuestionArea.height(''+initialQuestionHeight);
+      el_QuestionArea.style.height = initialQuestionHeight+'px';
+      el_QuestionArea.style.maxHeight = '200px';
 
 
       VisualStyles.Visible(el_QuestionBottomOverlay);
-      el_QuestionParagraphWrapper.removeClass("full-height");
+      el_QuestionParagraphWrapper.classList.remove("full-height");
       VisualStyles.Visible(el_AnswerGroup);
       VisualStyles.Clickable(el_AnswerGroup);
 
@@ -690,15 +830,13 @@ const resultsURL = getParameter("quizResultsURL");
     let CorrectResults = CorrectAnswers;
     let IncorrectResults = IncorrectAnswers;
     let PercentageResults = Math.round((CorrectAnswers/TotalQuestions)*100);
-    PointsResults = CorrectAnswers*100;
 
-
-    fadeInOutUpdate(el_ResultsPointsText,PointsResults,500);
+    /*fadeInOutUpdate(el_ResultsPointsText,PointsResults,500);*/
     fadeInOutUpdate(el_ResultsPercentageText,PercentageResults,600);
     fadeInOutUpdate(el_ResultsCorrectText,CorrectResults,700);
     fadeInOutUpdate(el_ResultsIncorrectText,IncorrectResults,800);
  
-
+    SubmitScoreDB();
 
    }
 
@@ -724,16 +862,15 @@ const resultsURL = getParameter("quizResultsURL");
 
 
 
-     el_ReplayQuizButton.unbind('click').click(function(){
-     PressButtonAnimation($(this));
+     el_ReplayQuizButton.onclick = function(){
+     PressButtonAnimation(this);
      ReplayQuiz();
-
 
      VisualStyles.Invisible(el_ReviewControls);
      VisualStyles.Unclickable(el_ReviewNextButton);
      VisualStyles.Unclickable(el_ReviewPreviousButton);
 
-     });
+     };
 
 
 
@@ -746,20 +883,17 @@ const resultsURL = getParameter("quizResultsURL");
 
    // Review Answers Logic
 
-    el_ReviewAnswersButton.unbind('click').click(function(){
+    el_ReviewAnswersButton.onclick=function(){
 
       if(!QuizActive && !ReviewingQuiz){
-
-
-
 
         ReviewingQuiz = true;
         CurrentQuestion = 1;
 
-        el_CurrentCorrectAnswers.text(CorrectAnswers);
-        el_CurrentIncorrectAnswers.text(IncorrectAnswers);
+        el_CurrentCorrectAnswers.textContent = CorrectAnswers;
+        el_CurrentIncorrectAnswers.textContent = IncorrectAnswers;
 
-        PressButtonAnimation($(this));
+        PressButtonAnimation(this);
 
         // Make the quiz area visible
         VisualStyles.Visible(el_QuizContainer);
@@ -782,31 +916,30 @@ const resultsURL = getParameter("quizResultsURL");
         VisualStyles.Visible(el_QuestionArea);
         VisualStyles.Visible(el_AnswerGroup);
 
-        ReviewQuiz(CurrentQuestion);
+        ReviewQuiz(CurrentQuestion-1);
 
-        let result = CheckCorrectAnswer();
 
         AnimateAnswerResult(UserAnswersElement[CurrentQuestion-1],result,0);
 
       }
 
-    });
+    };
 
 
-    el_ReviewNextButton.unbind('click').click(function(){
+    el_ReviewNextButton.onclick = function(){
       if(CurrentQuestion<TotalQuestions)
-      ReviewQuestion(1);
-    });
+      ReviewQuestion(+1);
+    };
 
-    el_ReviewPreviousButton.unbind('click').click(function(){
+    el_ReviewPreviousButton.onclick = function(){
       if(CurrentQuestion>1)
       ReviewQuestion(-1);
-    });
+    };
 
 
     function ReviewQuestion(number){
       CurrentQuestion += number;
-      ReviewQuiz(CurrentQuestion);
+      ReviewQuiz(CurrentQuestion-1);
       let result = CheckCorrectAnswer();
       AnimateAnswerResult(UserAnswersElement[CurrentQuestion-1],result,0);
 
@@ -835,19 +968,17 @@ const resultsURL = getParameter("quizResultsURL");
 
       ReviewingQuiz = true;
 
-      const TempQuestion = QuizQuestions[questionNumber - 1];
+      const TempQuestion = QuizQuestions[questionNumber];
 
-      el_CurrentQuestionNumber.text(CurrentQuestion + "/" + TotalQuestions);
+      el_CurrentQuestionNumber.textContent = CurrentQuestion + "/" + TotalQuestions;
   
-      el_QuestionParagraph.text(TempQuestion.question);
+      el_QuestionParagraph.textContent = TempQuestion.question;
   
-      el_Answer1.text(TempQuestion.options[0]);
-      el_Answer2.text(TempQuestion.options[1]);
-      el_Answer3.text(TempQuestion.options[2]);
-      el_Answer4.text(TempQuestion.options[3]);
+      Create_el_Answer(questionNumber);
 
       ClearAllAnswers();
 
+      ResetQuestionHeight();
 
       
     }
@@ -861,12 +992,16 @@ const resultsURL = getParameter("quizResultsURL");
       return tempURL;
     }
 
-    el_ClickFunnelsRedirect.unbind('click').click(function(){
-      window.location.replace(buildResultsURL());
-    });
+    el_ClickFunnelsRedirect.onclick = function(){
+      if(resultsURL!=null){
+        window.location.replace(buildResultsURL());
+      }else{
+        alert("There was an error submitting the score.")
+      }
+    };
 
 
-});
+
   
 /* 
 
@@ -891,5 +1026,27 @@ fade out in animation when refreshing results and points. done
 if reviewing enlarged question, and then replay > shorten question upon replaying. done
 
 
+Questions will automatically get the default question height (but keep a max height as default.) Done
+Answers should auto adjust to the answer length (keep arrow button at center). Done
+Fix max-height animation transition issue. Done
+Enlarge question function and white overlay for overflow should only work on questions where there is overflow.
+
+Align answer elements vertically within the answers area.
+
+If the questions and answers are too large and overflow is happening, then the answer area should be vertically scrollable.
+
+Important: Adjust funcionality to display amount of answers based off the entered answers in the quiz object.
+
+
 
 */
+
+
+
+
+
+
+
+/* ----------- LEADERBOARD --------------_*/
+
+export {PointsResults,username,VisualStyles,fadeInOutUpdate}
