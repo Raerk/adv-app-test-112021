@@ -6,7 +6,7 @@
  import { } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js"
 
 
- import {fadeInOutUpdate, PointsResults,username, VisualStyles} from "./quiz.js";
+ import {fadeInOutUpdate, PointsResults,UserEmail, UserFirstName, VisualStyles} from "./quiz.js";
  // TODO: Add SDKs for Firebase products that you want to use
  // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,6 +27,7 @@
  const db = getDatabase();
 
 
+
  // DOM References
 
 let el_LeaderboardChart = document.querySelector('#leaderboard-chart');
@@ -41,6 +42,7 @@ let el_PersonalBestContainer = document.querySelector('.personal-best-container'
 let el_PersonalBest = document.querySelector('#personal-best');
 
 // Logic Variables
+
 
 let PersonalBest;
 
@@ -58,12 +60,9 @@ function Create_el_Highscore(amount){
     </div>
     `;    
 
-}
-
-
+} 
 
 let el_LeaderboardListRows = [];
-
 
 const UpdatedPoints = ref(db);
 onValue(UpdatedPoints, (snapshot) => {
@@ -112,7 +111,7 @@ onValue(UpdatedPoints, (snapshot) => {
 
         // Highlight the current active user in the leaderboard list
         let tempClass = "row";
-        if(username==tempData[key].FirstName)
+        if(UserEmail.toLowerCase()==tempData[key].Email)
         tempClass = "row self";
 
         // Add leaderboard user elements
@@ -126,9 +125,11 @@ onValue(UpdatedPoints, (snapshot) => {
             `;
 
 
-        // Get Personal Best from current array (if it matches username), and display it in the points screen
+        // Get Personal Best from current array (if it matches email), and display it in the points screen
 
-        if(tempData[key].FirstName==username){
+        console.log(tempData[key].Email+" with "+UserEmail.toLowerCase());
+
+        if(tempData[key].Email==UserEmail.toLowerCase()){
             PersonalBest = tempData[key].Points;
             el_PersonalBest.textContent = PersonalBest;
 
@@ -178,7 +179,10 @@ onValue(UpdatedPoints, (snapshot) => {
     // If the current score is higher than the personal best score, then update automatically. If it's lower, then do nothing.
 
     if(PointsResults>PersonalBest){
-        update(ref(db,username),{
+
+        let ValidatedEmail = ValidateEmailFirebase(UserEmail);
+
+        update(ref(db,ValidatedEmail),{
             Points: PointsResults,
         })
         .then(()=>{
@@ -190,8 +194,13 @@ onValue(UpdatedPoints, (snapshot) => {
 }
 
 function CreateUserScore(){
-    set(ref(db,username),{
-        FirstName: username,
+    let ValidatedEmail = ValidateEmailFirebase(UserEmail);
+
+    //console.log(ValidatedEmail+ "is the email before creating");
+
+    set(ref(db,ValidatedEmail),{
+        Email: UserEmail.toLowerCase(),
+        FirstName: UserFirstName,
         Points: PointsResults,
         Avatar: AssignAvatar(),
     }).then(()=>{
@@ -214,7 +223,10 @@ AssignAvatar();
 
 const SubmitScoreDB = function SubmitScoreDB(){
 
-    const userRef = ref(db,username);
+
+    let ValidatedEmail = ValidateEmailFirebase(UserEmail);
+
+    const userRef = ref(db,ValidatedEmail);
 
     get(userRef).then((snapshot) => {
         if (snapshot.exists()) {
@@ -261,9 +273,15 @@ function UpdateLeaderboardChart(arr){
     el_Top3Username.textContent = arr[2].FirstName;
     el_Top3Profile.style.color = arr[2].Avatar;
     el_Top3Points.textContent = arr[2].Points;
+
 }
 
 
+
+function ValidateEmailFirebase(TempEmail){
+    let ValidatedEmail = TempEmail.replace('.',',').toLowerCase();
+    return ValidatedEmail;
+}
 
 
 

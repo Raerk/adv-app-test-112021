@@ -87,7 +87,10 @@ const fadeInOutUpdate = function fadeInOutUpdate(element,text,delay){
 
 
 
-const username = getParameter("username");
+const UserEmail = getParameter("useremail");
+
+const UserFirstName = getParameter("username");
+
 const resultsURL = getParameter("quizResultsURL");
 
 
@@ -306,6 +309,8 @@ const resultsURL = getParameter("quizResultsURL");
 
     // Reset the quiz variables values
 
+
+
     QuizAnswers = [];
     QuizAnswersElement = [];
 
@@ -323,9 +328,17 @@ const resultsURL = getParameter("quizResultsURL");
 
     StartedSelectionTimer = false;
 
+    PointsResults = 0;
+    fadeInOutUpdate(el_ResultsPointsText,""+PointsResults,500);
+    fadeInOutUpdate(el_ResultsPercentageText,"-",500);
+    fadeInOutUpdate(el_ResultsCorrectText,"-",500);
+    fadeInOutUpdate(el_ResultsIncorrectText,"-",500);
 
+    /*
     PointsResults = 0;
     fadeInOutUpdate(el_ResultsPointsText,PointsResults,500);
+    */
+
 
     // Initialize Quiz
 
@@ -856,6 +869,7 @@ function Create_el_Answer(questionNumber){
 
       FadeOutQuiz(2000);
       FadeInQuiz(4000);
+
       setTimeout(initializeQuiz(),4000);
     }
    }
@@ -1049,4 +1063,4 @@ Important: Adjust funcionality to display amount of answers based off the entere
 
 /* ----------- LEADERBOARD --------------_*/
 
-export {PointsResults,username,VisualStyles,fadeInOutUpdate}
+export {PointsResults,UserEmail,UserFirstName,VisualStyles,fadeInOutUpdate}
