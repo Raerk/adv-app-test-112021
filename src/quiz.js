@@ -359,6 +359,11 @@ const resultsURL = getParameter("quizResultsURL");
     VisualStyles.Uninteractable(el_AnswerGroup);
     VisualStyles.Uninteractable(el_QuestionArea);
 
+    setTimeout(function(){
+      // clear answer section
+      document.getElementById('answers').innerHTML = "";
+    },1000);
+
     setTimeout(function(){VisualStyles.Visible(el_QuizCompleteMessage)},1000);
     setTimeout(function(){VisualStyles.Clickable(el_SummaryButtons)},1000);
     setTimeout(function(){VisualStyles.Clickable(el_ClickFunnelsRedirect)},1000);

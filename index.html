@@ -120,6 +120,7 @@
         </div>
       </div>
 
+
       <div class="main-view" id="review-view">
         <div class="main-content">
           <div class="top-content h-30">
@@ -191,7 +192,7 @@
             </button>
             <div class="label">Home</div>  
           </div>-->
-
+          
               <button
                 id="clickfunnels-redirect"
                 class="submit-results-btn unclickable"
@@ -223,37 +224,37 @@
             <div id="leaderboard-chart" class="leaderboard-chart invisible">
               <div class="winner-two">
                 <div class="winner-user">
-                  <div id="top-2-profile" class="thumbnail"><i class="fa-solid fa-circle-user"></i></div>
-                  <div id="top-2-username" class="label"></div>
+                  <div id="top-2-profile" class="thumbnail color-gray"><i class="fa-regular fa-user"></i></div>
+                  <div id="top-2-username" class="label">-</div>
                 </div>
 
                 <div class="bar">
                   <div class="placing">2</div>
-                  <div class="points"><span id="top-2-points"></span><br />PTS</div>
+                  <div class="points"><span id="top-2-points">-</span><br />PTS</div>
                 </div>
               </div>
 
               <div class="winner-one">
                 <div class="winner-user">
-                  <div id="top-1-profile" class="thumbnail"><i class="fa-solid fa-circle-user"></i></div>
-                  <div id="top-1-username" class="label"></div>
+                  <div id="top-1-profile" class="thumbnail color-gray"><i class="fa-regular fa-user"></i></div>
+                  <div id="top-1-username" class="label">-</div>
                 </div>
 
                 <div class="bar">
                   <div class="placing">1</div>
-                  <div class="points"><span id="top-1-points"></span><br />PTS</div>
+                  <div class="points"><span id="top-1-points">-</span><br />PTS</div>
                 </div>
               </div>
 
               <div class="winner-three">
                 <div class="winner-user">
-                  <div id="top-3-profile" class="thumbnail"><i class="fa-solid fa-circle-user"></i></div>
-                  <div id="top-3-username" class="label"></div>
+                  <div id="top-3-profile" class="thumbnail color-gray"><i class="fa-regular fa-user"></i></div>
+                  <div id="top-3-username" class="label">-</div>
                 </div>
 
                 <div class="bar">
                   <div class="placing">3</div>
-                  <div class="points"><span id="top-3-points"></span><br />PTS</div>
+                  <div class="points"><span id="top-3-points">-</span><br />PTS</div>
                 </div>
               </div>
             </div>
@@ -262,7 +263,60 @@
           <div id="particles-js3"></div>
         </div>
 
-        <div id="leaderboard-list" class="leaderboard-list"></div>
+        <div id="leaderboard-list" class="leaderboard-list">
+
+
+          <div id="leaderboard-list-row-wrapper" class="row-wrapper">
+
+              <div id="" class="row opacity-60">
+                  <div class="placing">1</div>
+                  <div class="thumbnail"><i style="color:lightgray" class="fa-regular fa-user"></i></div>
+                  <div id="test-username" class="name"> </div>
+                  <div class="points"><span id="test-points"> </span><span class="pts">PTS</span></div>
+              </div>
+
+              <div id="" class="row opacity-60">
+                <div class="placing">2</div>
+                <div class="thumbnail"><i style="color:lightgray" class="fa-regular fa-user"></i></div>
+                <div id="test-username" class="name"> </div>
+                <div class="points"><span id="test-points"> </span><span class="pts">PTS</span></div>
+              </div>
+
+            <div id="" class="row opacity-60">
+              <div class="placing">3</div>
+              <div class="thumbnail"><i style="color:lightgray" class="fa-regular fa-user"></i></div>
+              <div id="test-username" class="name"> </div>
+              <div class="points"><span id="test-points"> </span><span class="pts">PTS</span></div>
+            </div>
+
+            <div id="" class="row" style="justify-content: center;">
+                <div  style="
+                display: flex;
+                align-content: center;
+                justify-items: auto;
+                align-items: center;">
+                  <i class="fa-solid fa-circle-notch loader-spinner" style="margin-right: 20px"></i><span style="font-size: 13px;">Awaiting Class Results</span>
+                </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!--
+              <div class="summary-buttons" id="summary-buttons">
+
+                <button
+                id="clickfunnels-redirect"
+                class="submit-results-btn unclickable"
+              >
+                Submit Results
+              </button>
+
+              </div>
+-->
+
+
       </div>
     </div>
 

@@ -11,7 +11,7 @@ quizQuestions = {
         "It is chosen by machine learning or you can set it"
       ],
       "answer": "It is chosen by machine learning or you can set it"
-    },
+    },/*
     {
       "question": "What is the best dataset to make linear regressions?",
       "options": [
@@ -40,7 +40,7 @@ quizQuestions = {
         "It is chosen by machine learning or you can set it"
       ],
       "answer": "It is chosen by machine learning or you can set it"
-    },
+    },*/
     /*
     {
       "question": "From the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.\nFrom the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.\nFrom the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.\nFrom the set of integers from 1 to 10, inclusive, two integers are randomly selected one after the other with replacement.",
