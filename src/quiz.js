@@ -1007,7 +1007,7 @@ function Create_el_Answer(questionNumber){
     // End Quiz Button: Send to Clickfunnels
 
     function buildResultsURL(){
-      let tempURL = encodeURI(resultsURL)+"?username="+username+"&points="+PointsResults;
+      let tempURL = encodeURI(resultsURL)+"?username="+UserFirstName+"&points="+PointsResults;
       return tempURL;
     }
 
