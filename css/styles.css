@@ -133,6 +133,10 @@ html {
 
   body{
     height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-flow: column nowrap;
   }
 
   .root{
@@ -143,16 +147,31 @@ html {
     margin: 0 auto;
     overflow:scroll;
 
-    scroll-snap-type: y mandatory;
+
+    display: flex;
+    overflow: auto;
+    outline: 1px dashed lightgray;
+    flex: none;
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    flex-flow: row nowrap;
+
+    scroll-snap-type: x mandatory;
+
   }
 
   .root:last-child{
-    margin-right: 0px;
   }
 
   .main-view {
     /*width: 375px;*/
 
+    overflow: auto;
+    flex: none;
+    flex-flow: row nowrap;
     scroll-snap-align: start;
 
     width: 100vw;
