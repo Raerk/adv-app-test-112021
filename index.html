@@ -208,7 +208,7 @@
 
       <!-- LEADERBOARD -->
 
-      <div class="main-view">
+      <div class="main-view" id="leaderboard-view">
         <div class="main-content extended">
           <div class="top-content">
             <header class="min-header">
@@ -323,5 +323,33 @@
     <!-- FIREBASE -->
 
     <script type="module" src="src/leaderboard.js"></script>
+
+
+
+    <!-- Scroll -->
+    <script>
+      $(document).ready(function(){
+
+
+
+            $('.main-view').click(function(event) {
+              event.preventDefault();
+
+           //   document.querySelector('.root').scrollLeft += 225;
+
+           var element = document.getElementById("leaderboard-view");
+
+        /*    element.scrollIntoView();
+            element.scrollIntoView(false);
+            element.scrollIntoView({block: "end"});*/
+            element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+
+            })
+
+
+      });
+      </script>
+
+
   </body>
 </html>
