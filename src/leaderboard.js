@@ -318,7 +318,8 @@ function UpdateLeaderboardChart(arr) {
 
   el_Top2Username.textContent = arr[1].FirstName;
   el_Top2Profile.style.color = arr[1].Avatar;
-  el_Top2Profile.style.color = '#fff';
+  el_Top1Profile.style.textShadow = '0px 5px 7px '+arr[1].Avatar;
+  /*el_Top2Profile.style.color = '#fff';*/
   el_Top2Profile.style.border = '1.5px solid '+arr[1].Avatar;
   el_Top2Profile.style.boxShadow = '0px 4px 9px '+arr[1].Avatar;
   el_Top2Points.textContent = arr[1].Points;
@@ -329,7 +330,8 @@ function UpdateLeaderboardChart(arr) {
 
   el_Top3Username.textContent = arr[2].FirstName;
   el_Top3Profile.style.color = arr[2].Avatar;
-  el_Top3Profile.style.color = '#fff';
+  el_Top1Profile.style.textShadow = '0px 5px 7px '+arr[2].Avatar;
+  /*el_Top3Profile.style.color = '#fff';*/
   el_Top3Profile.style.border = '1.5px solid '+arr[2].Avatar;
   el_Top3Profile.style.boxShadow = '0px 4px 9px '+arr[2].Avatar;
   el_Top3Points.textContent = arr[2].Points;
