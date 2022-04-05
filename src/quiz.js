@@ -5,7 +5,7 @@ import quizQuestions from "./quiz-questions.js";
 import {SubmitScoreDB} from "./leaderboard.js";
 
 
-import {el_QuizView,el_ReviewView,el_LeaderboardView,ScrollView} from "./main.js";
+import {el_QuizView,el_QuizViewScrollArea,el_ReviewView,el_LeaderboardView,ScrollView,ScrollTop} from "./main.js";
 
 
 
@@ -668,6 +668,12 @@ function Create_el_Answer(questionNumber){
         IncorrectAnswer();
       }
     }
+
+
+    // Scroll to the top of the quiz page (useful for when the question area was large enough to scroll)
+
+    setTimeout(function(){ScrollTop(el_QuizViewScrollArea)},2500);
+
 
   }
 
