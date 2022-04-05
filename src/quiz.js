@@ -5,6 +5,10 @@ import quizQuestions from "./quiz-questions.js";
 import {SubmitScoreDB} from "./leaderboard.js";
 
 
+import {el_QuizView,el_ReviewView,el_LeaderboardView,ScrollView} from "./main.js";
+
+
+
 // Visual Styles and Animation Functions
 
 const VisualStyles = {
@@ -845,6 +849,9 @@ function Create_el_Answer(questionNumber){
 
    function UpdateQuizResults(){
 
+    setTimeout(function(){ScrollView(el_ReviewView);},2500);
+
+
     let CorrectResults = CorrectAnswers;
     let IncorrectResults = IncorrectAnswers;
     let PercentageResults = Math.round((CorrectAnswers/TotalQuestions)*100);
@@ -876,6 +883,10 @@ function Create_el_Answer(questionNumber){
       FadeInQuiz(4000);
 
       setTimeout(initializeQuiz(),4000);
+
+      // Scroll Horizontally to the Quiz View
+      setTimeout(function(){ScrollView(el_QuizView);},1000);
+
     }
    }
 
@@ -939,6 +950,9 @@ function Create_el_Answer(questionNumber){
 
 
         AnimateAnswerResult(UserAnswersElement[CurrentQuestion-1],result,0);
+
+        // Scroll Horizontally to the Quiz View
+        setTimeout(function(){ScrollView(el_QuizView);},200);
 
       }
 

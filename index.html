@@ -16,6 +16,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script src="particles.js"></script>
+
+    <script type="module" src="src/main.js"></script>
+
     <script type="module" src="src/quiz-questions.js"></script>
     <script type="module" src="src/quiz.js"></script>
     <script src="src/header-particles.js"></script>
@@ -327,28 +330,7 @@
 
 
     <!-- Scroll -->
-    <script>
-      $(document).ready(function(){
 
-
-
-            $('.main-view').click(function(event) {
-              event.preventDefault();
-
-           //   document.querySelector('.root').scrollLeft += 225;
-
-           var element = document.getElementById("leaderboard-view");
-
-        /*    element.scrollIntoView();
-            element.scrollIntoView(false);
-            element.scrollIntoView({block: "end"});*/
-            element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-
-            })
-
-
-      });
-      </script>
 
 
   </body>
