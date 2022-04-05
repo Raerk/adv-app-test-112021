@@ -308,8 +308,8 @@ let el_Top3Points = document.getElementById("top-3-points");
 function UpdateLeaderboardChart(arr) {
   el_Top1Username.textContent = arr[0].FirstName;
   el_Top1Profile.style.color = arr[0].Avatar;
-  //el_Top1Profile.style.textShadow = '0px 5px 7px '+arr[0].Avatar;
-  el_Top1Profile.style.color = '#fff';
+  el_Top1Profile.style.textShadow = '0px 5px 7px '+arr[0].Avatar;
+ /* el_Top1Profile.style.color = '#fff';*/
   el_Top1Profile.style.border = '1.5px solid '+arr[0].Avatar;
   el_Top1Profile.style.boxShadow = '0px 4px 9px '+arr[0].Avatar;
   el_Top1Points.textContent = arr[0].Points;
