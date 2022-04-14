@@ -168,6 +168,9 @@ const resultsURL = getParameter("quizResultsURL");
   let el_ReplayQuizButton = document.querySelector('#replay-quiz');
 
   let el_ClickFunnelsRedirect = document.querySelector('#clickfunnels-redirect');
+  let el_ClickFunnelsRedirectMobile = document.querySelector('#clickfunnels-redirect-mobile');
+
+  let el_ContinueToLeaderboard = document.querySelector('#continue-to-leaderboard');
 
 
   
@@ -303,6 +306,7 @@ const resultsURL = getParameter("quizResultsURL");
     VisualStyles.Unclickable(el_SummaryButtons);
 
     VisualStyles.Uninteractable(el_ClickFunnelsRedirect);
+    VisualStyles.Uninteractable(el_ClickFunnelsRedirectMobile);
 
     VisualStyles.Inactive(el_ReviewAnswersButton);
     VisualStyles.Inactive(el_ReviewAnswersButtonLabel);
@@ -371,6 +375,10 @@ const resultsURL = getParameter("quizResultsURL");
     setTimeout(function(){VisualStyles.Visible(el_QuizCompleteMessage)},1000);
     setTimeout(function(){VisualStyles.Clickable(el_SummaryButtons)},1000);
     setTimeout(function(){VisualStyles.Clickable(el_ClickFunnelsRedirect)},1000);
+    setTimeout(function(){VisualStyles.Clickable(el_ClickFunnelsRedirectMobile)},1000);
+
+    // Make the continue to leaderboard button visible (for mobile)
+    setTimeout(function(){VisualStyles.Clickable(el_ContinueToLeaderboard)},1000);
   }
 
   
@@ -871,6 +879,8 @@ function Create_el_Answer(questionNumber){
 
    }
 
+   el_ContinueToLeaderboard.onclick = function(){ScrollView(el_LeaderboardView);};
+
 
 
    // Replay Quiz
@@ -1032,6 +1042,14 @@ function Create_el_Answer(questionNumber){
     }
 
     el_ClickFunnelsRedirect.onclick = function(){
+      if(resultsURL!=null){
+        window.location.replace(buildResultsURL());
+      }else{
+        alert("There was an error submitting the score.")
+      }
+    };
+
+    el_ClickFunnelsRedirectMobile.onclick = function(){
       if(resultsURL!=null){
         window.location.replace(buildResultsURL());
       }else{

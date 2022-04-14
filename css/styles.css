@@ -108,16 +108,38 @@ html {
 
 
 
+#clickfunnels-redirect{
+  display: block;
+}
 
+#clickfunnels-redirect-mobile{
+  display: none;
+}
 
+#continue-to-leaderboard{
+  display: none;
+}
 
 @media(max-width:768px){
   .root{
     display: inline-block;
   }
   .main-view{
-    margin-right: 20px;
+    margin-right: 0px;
     margin-left: 0px;
+  }
+
+
+  #clickfunnels-redirect{
+    display: none;
+  }
+
+  #clickfunnels-redirect-mobile{
+    display: block;
+  }
+
+  #continue-to-leaderboard{
+    display: block;
   }
 }
 
@@ -984,6 +1006,7 @@ color: white;
 }
 
 .submit-results-btn{
+  height: 55px;
   margin: 0 auto;
   margin-top: 40px;
   padding: 16px;
@@ -1279,6 +1302,7 @@ flex: 33%;
 .leaderboard-list .row .placing{
 float: left;
 font-size: 12px;
+width: 11px;
 }
 
 .leaderboard-list .row .thumbnail{
@@ -1539,4 +1563,8 @@ border: 1.5px solid lightgray;
 
 .h-30{
   height: 30%;
+}
+
+.d-none{
+  display: none;
 }

@@ -189,6 +189,21 @@ onValue(UpdatedPoints, (snapshot) => {
         }
       },1000);
 
+
+      // Scroll to position of the user's row in the leaderboard list
+      setTimeout(function(){
+
+        //ViewElementScrollArea.scrollTo({top: 0, behavior: 'smooth'});
+        var myElement = document.querySelector('.self');
+        var topPos = myElement.offsetTop;
+        //document.getElementById('leaderboard-list').scrollTop = topPos;
+
+
+        document.getElementById('leaderboard-list').scrollTo({top: topPos, behavior: 'smooth'});
+      },2500);
+
+
+
     }else{
         
       //Show the default leaderboard placeholder
@@ -202,7 +217,10 @@ onValue(UpdatedPoints, (snapshot) => {
         //UpdateLeaderboardChart(tempData);
       }, 400);
 
-    }
+
+
+
+  }
 
   }else{
             //Show the default leaderboard placeholder
@@ -215,6 +233,8 @@ onValue(UpdatedPoints, (snapshot) => {
         
                 //UpdateLeaderboardChart(tempData);
               }, 400);
+
+
   }
 });
 
@@ -258,8 +278,8 @@ function CreateUserScore() {
 }
 
 
-// Colors:          Turquoise, BrightViolet, Pink, Purple, Violet
-let AvatarColors = ["#28C4D4", "#C32FE4", "#E953AD", "#7000CF", "#AB2EB8"];
+// Colors:          TurquoiseGreen, BrightViolet, Pink, TealBlue
+let AvatarColors = ["#27D8B6", "#D74DFF", "#E953AD", "#25AEE0"];
 
 function AssignAvatar() {
   var RandomIndex =
@@ -308,7 +328,7 @@ let el_Top3Points = document.getElementById("top-3-points");
 function UpdateLeaderboardChart(arr) {
   el_Top1Username.textContent = arr[0].FirstName;
   el_Top1Profile.style.color = arr[0].Avatar;
-  el_Top1Profile.style.textShadow = '0px 5px 7px '+arr[0].Avatar;
+  el_Top1Profile.style.textShadow = '0px 3px 5px '+arr[0].Avatar;
  /* el_Top1Profile.style.color = '#fff';*/
   el_Top1Profile.style.border = '1.5px solid '+arr[0].Avatar;
   el_Top1Profile.style.boxShadow = '0px 4px 9px '+arr[0].Avatar;
@@ -318,7 +338,7 @@ function UpdateLeaderboardChart(arr) {
 
   el_Top2Username.textContent = arr[1].FirstName;
   el_Top2Profile.style.color = arr[1].Avatar;
-  el_Top1Profile.style.textShadow = '0px 5px 7px '+arr[1].Avatar;
+  el_Top2Profile.style.textShadow = '0px 3px 5px '+arr[1].Avatar;
   /*el_Top2Profile.style.color = '#fff';*/
   el_Top2Profile.style.border = '1.5px solid '+arr[1].Avatar;
   el_Top2Profile.style.boxShadow = '0px 4px 9px '+arr[1].Avatar;
@@ -330,7 +350,7 @@ function UpdateLeaderboardChart(arr) {
 
   el_Top3Username.textContent = arr[2].FirstName;
   el_Top3Profile.style.color = arr[2].Avatar;
-  el_Top1Profile.style.textShadow = '0px 5px 7px '+arr[2].Avatar;
+  el_Top3Profile.style.textShadow = '0px 3px 5px '+arr[2].Avatar;
   /*el_Top3Profile.style.color = '#fff';*/
   el_Top3Profile.style.border = '1.5px solid '+arr[2].Avatar;
   el_Top3Profile.style.boxShadow = '0px 4px 9px '+arr[2].Avatar;
