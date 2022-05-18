@@ -12,14 +12,20 @@ div{
   box-sizing: border-box;
 }
 
+
+
 html {
   font-family: "DM Sans", sans-serif;
   background: black;
 }
 
+
+
 .root{
   display: flex;
   height: 100vh;
+
+
   width: 100%;
   flex-direction: row;
   align-items: center;
@@ -28,6 +34,10 @@ html {
   background-image: url('../images/DesktopBackground.jpg');
 
   background-size: cover;
+
+  /*iOS 100vh Fix*/
+  min-height: -webkit-fill-available;
+
 
 }
 
@@ -151,6 +161,8 @@ html {
 
   html{
     height: 100vh;
+      /*iOS 100vh Fix*/
+      height: -webkit-fill-available;
   }
 
   body{
@@ -159,6 +171,9 @@ html {
     align-items: center;
     justify-content: space-between;
     flex-flow: column nowrap;
+
+      /*iOS 100vh Fix*/
+      height: -webkit-fill-available;
   }
 
   .root{
@@ -182,6 +197,9 @@ html {
     flex-flow: row nowrap;
 
     scroll-snap-type: x mandatory;
+
+      /*iOS 100vh Fix*/
+      height: -webkit-fill-available;
 
   }
 
@@ -1089,7 +1107,9 @@ color: white;
 
 .leaderboard-chart{
   width: 65%;
-  height: 350px;
+  /*height: 350px;*/
+  /*height: auto;*/
+  height: 260px;
   margin: 0 auto;
   margin-top: 0px;
   display: flex;
@@ -1100,6 +1120,9 @@ color: white;
   align-items: flex-end;
   color: #fff;
   transition: 800ms;
+
+  /*Height and margin fix*/
+  margin-top: 45px;
 }
 
 .leaderboard-chart > div{
@@ -1164,6 +1187,9 @@ flex: 33%;
   font-size: 30px;
   width: 100%;
   font-weight: 700;
+
+  /* Spacing Fix */
+  margin-top: 23px;
 }
 
 .leaderboard-chart > div .bar .points{
@@ -1174,6 +1200,8 @@ flex: 33%;
   font-size: 12px;
   line-height: 18px;
   bottom: 25px;
+
+  bottom: 21px;
 }
 
 .leaderboard-chart > div .bar{
@@ -1265,11 +1293,28 @@ flex: 33%;
   overflow-y: scroll;
   margin: 0 auto;
   margin-top: -110px;
+  margin-top: -155px;
   position: relative;
   z-index: 1;
 
   margin-right: 5%;
   margin-left: 5%;
+}
+
+.extra-leaderboard-placeholder-desktop{
+  display: none !important;
+}
+
+/*--- Show an additional row for desktop ---*/
+@media(min-width:769px){
+  .leaderboard-list{
+    height: 299px;
+  }
+
+  .extra-leaderboard-placeholder-desktop{
+    display: flex !important;
+  }
+
 }
 
 /* hide scrollbar but allow scrolling */
@@ -1420,7 +1465,8 @@ border: 1.5px solid lightgray;
     opacity: 0;
   }
   100% {
-    height: 160px;
+    /*height: 160px;*/
+    height: 130px;
     opacity: 1;
   }
 }
@@ -1431,7 +1477,8 @@ border: 1.5px solid lightgray;
     opacity: 0;
   }
   100% {
-    height: 210px;
+    /*height: 210px;*/
+    height: 170px;
     opacity: 1;
   }
 }
@@ -1442,7 +1489,8 @@ border: 1.5px solid lightgray;
     opacity: 0;
   }
   100% {
-    height: 180px;
+    /*height: 180px;*/
+    height: 150px;
     opacity: 1;
   }
 }
@@ -1568,3 +1616,4 @@ border: 1.5px solid lightgray;
 .d-none{
   display: none;
 }
+
